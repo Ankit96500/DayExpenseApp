@@ -1,5 +1,6 @@
-import { where } from 'sequelize';
 import User from '../models/user.js';
+import sequelize from '../config/database.js';
+import { Sequelize } from 'sequelize';
 
 
 
@@ -14,10 +15,15 @@ export async function postSignupUser(req, res, next) {
       email : email,
     })
 
-    res.json({'data':data}) 
+    res.status(201).json({'data':data}) 
 
   } catch (error) {
-    console.log('-->',error);
+    if (error instanceof Sequelize.UniqueConstraintError) {
+      res.status(400).json({error:"User Already Exist"})
+      
+    } else {
+      res.status(500).json({error: 'Something went wrong' });
+    }
   }
 }
 

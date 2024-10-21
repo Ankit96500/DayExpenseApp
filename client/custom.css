@@ -26,7 +26,7 @@
   h1{
     padding-bottom: 20;
     text-align: center;
-    background-color: #28a78c;
+    color: #28a78c;
   }
   
   body {
@@ -75,3 +75,7 @@
     background-color: #055745;
   }
   
+  /* display error */
+  #error{
+   color: red;
+  }

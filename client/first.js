@@ -30,7 +30,12 @@ function SignupUser(UserData) {
         .then(response => {
            alert('User Signup Successfully')
         })
-        .catch(error => console.log('Error posting blog:', error));
+        .catch(error => {
+            const e = document.getElementById('error')
+            e.innerHTML = error.response.data.error  
+            console.log('Error posting blog:', error.response.data)
+        });
+        
 }
 
 
