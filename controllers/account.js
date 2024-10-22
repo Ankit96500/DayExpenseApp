@@ -1,20 +1,26 @@
 import User from '../models/user.js';
 import sequelize from '../config/database.js';
 import { Sequelize } from 'sequelize';
-
+import bcrypt, { hash } from "bcrypt";
+const saltRounds = 10;
 
 
 export async function postSignupUser(req, res, next) {
-  const name = req.body.name;
-  const email = req.body.email;
-  const password = req.body.password;
+  const {name,email,password} = req.body;
+
+  // if (!name || !email || !password) {
+  //   res.status(400).json({error:"Name, email, and password are required" })
+  // }  no need bcos i handle from frontend
   try {
+    
+    const hashpassword = await bcrypt.hash(password,saltRounds);
+    
     const data = await User.create({    
       name : name,
-      password : password,
+      password : hashpassword,
       email : email,
     })
-
+     
     res.status(201).json({'data':data}) 
 
   } catch (error) {
@@ -30,7 +36,6 @@ export async function postSignupUser(req, res, next) {
 export async function postLoginUser(req,res) {
   const email = req.body.email;
   const password = req.body.password;
-  // console.log(`email: ${email}   password: ${password} `);
   
   try {
       // first check , given email exist or not
@@ -39,23 +44,26 @@ export async function postLoginUser(req,res) {
           email:email,
         }
       })
-      // if user not exist
-      if (!user) {
-        // console.log('user not exists');     
-        res.status(404).json({error:"user does not exist"});
-      }
-      // if password not match
-      if (user.password !== password) {
-        res.status(401).json({error:"Type Correct Password"});
-      }
-      //if both email and password exist:
-      res.status(200).json({'data':user})
-    } catch (error) {
-    
+     // If the user does not exist
+     if (!user) {
+      return res.status(404).json({ error: "User does not exist" });
+    }
+
+    // If the user exists, compare the provided password with the stored hashed password
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+
+    // If the password does not match
+    if (!isPasswordMatch) {
+      return res.status(401).json({ error: "Type correct password" });
+    }
+    // If both email and password are correct, send the user data as the response
+    return res.status(200).json({ data: user });
+  } catch (error) {
+    console.error('Error during login:', error);
+    return res.status(500).json({ error: "An error occurred during login" });
   }
-
-
 }
+
 
 
 
