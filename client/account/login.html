@@ -4,24 +4,26 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Day-To-Day Expense</title>
-   <link rel="stylesheet" href="custom.css">
+   <link rel="stylesheet" href="../css/custom.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </head>
   <body>
  
     <h1>Day-To-Day Expense Tracker App</h1>
-    <h2>Signup Page</h2>
+    <h2>Login Page</h2>
 
-    <form id="signup-form">
-      <input type="text" id="name" placeholder="Username" required />
+    <form id="login-form">
       
       <sub id="error"></sub>
       <input type="email" id="email" placeholder="Email" required />
       
       <input type="password" id="password" placeholder="password" required />
-      <button type="submit" id="postsignup">Create User</button>
+      <button type="submit" id="postlogin">Login User</button>
     </form>
 
-    <script src="first.js"></script>
+    <div>
+      <p id="log-page"><a href="../account/signup.html">Signup New User</a></p>
+    </div>
+    <script src="../js/login.js"></script>
   </body>
 </html>

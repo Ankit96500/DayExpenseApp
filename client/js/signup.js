@@ -7,7 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.getElementById('signup-form').addEventListener('submit', handleFormSubmit);
 
-// Handle form submission
+
+
+// Handle form submission signup
 function handleFormSubmit(event) {
     event.preventDefault();
 
@@ -24,7 +26,7 @@ function handleFormSubmit(event) {
 }
 
 
-// // Create a new user (POST)
+// Create a new user (POST)
 function SignupUser(UserData) {
     axios.post('http://localhost:3000/admin/signup-user',UserData)
         .then(response => {
@@ -37,6 +39,9 @@ function SignupUser(UserData) {
         });
         
 }
+
+
+
 
 
 

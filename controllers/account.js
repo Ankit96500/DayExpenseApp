@@ -27,5 +27,37 @@ export async function postSignupUser(req, res, next) {
   }
 }
 
+export async function postLoginUser(req,res) {
+  const email = req.body.email;
+  const password = req.body.password;
+  // console.log(`email: ${email}   password: ${password} `);
+  
+  try {
+      // first check , given email exist or not
+      const user = await User.findOne({
+        where:{
+          email:email,
+        }
+      })
+      // if user not exist
+      if (!user) {
+        // console.log('user not exists');     
+        res.status(404).json({error:"user does not exist"});
+      }
+      // if password not match
+      if (user.password !== password) {
+        res.status(401).json({error:"Type Correct Password"});
+      }
+      //if both email and password exist:
+      res.status(200).json({'data':user})
+    } catch (error) {
+    
+  }
+
+
+}
+
+
+
 
 
