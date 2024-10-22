@@ -15,3 +15,6 @@
 
 # If the user doesnt exist send a response 404 (User not found)﻿
 ![Annotation 2024-10-22 104220](https://github.com/user-attachments/assets/eae8bd4b-58f7-4d2f-bcb3-513cf3b436af)
+
+# Daily Expense App features added(navbar)
+![Annotation 2024-10-22 145223](https://github.com/user-attachments/assets/ab35bb11-469c-4923-ae6d-e0e33868698e)
