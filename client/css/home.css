@@ -1,0 +1,164 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Form Container */
+.container {
+    max-width: 400px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+/* Input fields */
+.container input,
+.container select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+/* Button styles */
+#add-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #28a78c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+#add-btn:hover {
+    background-color: #055745;
+}
+
+/* Expense List */
+#expense-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+#expense-list li {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f1f1f1;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+/* Headings */
+h2 {
+    text-align: center;
+    color: #333;
+}
+
+/* Navbar */
+.navbar {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #28a78c;
+    padding: 10px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px; /* Add bottom space directly */
+}
+
+/* Logo */
+.navbar .logo {
+    font-size: 24px;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* Navbar Links */
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.navbar ul li {
+    margin: 0 15px;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+}
+
+.navbar ul li a:hover {
+    color: #f1f1f1;
+}
+
+/* Button (Optional) */
+.navbar .btn {
+    background-color: #055745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.navbar .btn:hover {
+    background-color: #046a58;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;  /* Reduced padding for smaller screens */
+    }
+
+    .navbar ul {
+        flex-direction: column;
+        width: 100%;
+        padding: 10px 0;
+    }
+
+    .navbar ul li {
+        margin: 10px 0;
+    }
+
+    .navbar .btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Adjusting the navbar width */
+@media (max-width: 576px) {
+    .navbar {
+        padding: 5px 10px;  /* Even more reduced padding */
+    }
+
+    .navbar .logo {
+        font-size: 20px;  /* Smaller logo size */
+    }
+
+    .navbar ul li a {
+        font-size: 14px;  /* Smaller text size for links */
+    }
+}

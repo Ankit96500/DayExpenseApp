@@ -28,6 +28,8 @@ function LoginUser(LoginUserData) {
     axios.post('http://localhost:3000/admin/login-user',LoginUserData)
     .then(response =>{
         alert('User Login SUccessfully')
+        // Redirect to another HTML page
+        window.location.href = "../home/home.html"; 
     })
     .catch(error =>{
         e.innerHTML = error.response.data.error
