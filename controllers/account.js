@@ -1,7 +1,10 @@
 import User from '../models/user.js';
 import sequelize from '../config/database.js';
 import { Sequelize } from 'sequelize';
-import bcrypt, { hash } from "bcrypt";
+
+import JWT from "jsonwebtoken";
+
+import bcrypt from "bcrypt";
 const saltRounds = 10;
 
 
@@ -57,7 +60,17 @@ export async function postLoginUser(req,res) {
       return res.status(401).json({ error: "Type correct password" });
     }
     // If both email and password are correct, send the user data as the response
-    return res.status(200).json({ data: user });
+    JWT.sign({userID:user.id,name:user.name},'secretkey',(err,token)=>{
+      if (token) {
+        console.log('show token',token);
+    }
+      if (err) {
+      res.status(500).json({error:"token not generated"})
+    }
+    return res.status(200).json({token:token});
+  });
+
+
   } catch (error) {
     console.error('Error during login:', error);
     return res.status(500).json({ error: "An error occurred during login" });

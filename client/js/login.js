@@ -29,6 +29,8 @@ function LoginUser(LoginUserData) {
     .then(response =>{
         alert('User Login SUccessfully')
         // Redirect to another HTML page
+        console.log(response.data.token);
+        localStorage.setItem('token',response.data.token);
         window.location.href = "../home/home.html"; 
     })
     .catch(error =>{

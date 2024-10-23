@@ -13,30 +13,39 @@ let editingId = null;  // To track which expense is being edited
 
 // Function to render the expenses from the API
 function renderExpenses() {
-    const res= axios.get(`${API_URL}/get_dt`)
+    const token = localStorage.getItem('token')
+    const res= axios.get(`${API_URL}/get_dt`,{headers:{'Authorization' : token}})
         .then(response => {
-            expenseList.innerHTML = '';
-            const expenses = response.data;
 
-            expenses.forEach((expense) => {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    ${expense.expense_amount} - ${expense.desc} (${expense.category})
-                    <span>
-                        <button onclick="deleteExpense('${expense.id}')">Delete Expense</button>
-                    </span>
-                `;
-                expenseList.appendChild(li);
-            });
+            expenseList.innerHTML = '';
+            const expenses = response.data.data;
+
+            if (Array.isArray(expenses)) {
+                // console.log('upcomming response from server',response);
+                expenses.forEach((expense) => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        ${expense.expense_amount} - ${expense.desc} (${expense.category})
+                        <span>
+                            <button onclick="deleteExpense('${expense.id}')">Delete Expense</button>
+                        </span>
+                    `;
+                    expenseList.appendChild(li);
+                });   
+            }
         })
         .catch(error => {
-            console.error("Error fetching expenses", error);
+            const e = document.getElementById('error')
+            e.innerHTML = error
+            // console.error("Error fetching expenses", error.response.data.error);
         });
         
 }
 
 // Function to add or edit an expense
 function addExpense() {
+    console.log('add expense calling finxtio n');
+    
     const expense_amount = expenseInput.value;
     const desc = descriptionInput.value;
     const category = categoryInput.value;
@@ -52,8 +61,9 @@ function addExpense() {
         category
     };
 
+    const token = localStorage.getItem('token')
     // Adding a new expense
-    axios.post(`${API_URL}/add_dt`, expense)
+    axios.post(`${API_URL}/add_dt`,expense,{headers:{'Authorization' : token}})
     .then(() => {
         renderExpenses();
         clearForm();
