@@ -61,9 +61,9 @@ export async function postLoginUser(req,res) {
     }
     // If both email and password are correct, send the user data as the response
     JWT.sign({userID:user.id,name:user.name},'secretkey',(err,token)=>{
-      if (token) {
-        console.log('show token',token);
-    }
+    //   if (token) {
+    //     console.log('show token',token);
+    // }
       if (err) {
       res.status(500).json({error:"token not generated"})
     }

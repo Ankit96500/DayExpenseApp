@@ -10,9 +10,9 @@ export const getdata = async (req,res)=>{
                 where:{id:req.user.id},
             }
         )
-        // console.log('Data >>>>',JSON.stringify(await dt.getExpensetb()));
+        // console.log('Data >>>>',JSON.stringify(dt));
         const data = await dt.getExpensetb()
-        res.status(200).json({data:data})
+        res.status(200).json({data:data,user:dt})
     } catch (error) {
         res.status(404).json({error:"Sorry Try Again.."})
         // console.log('Not Saved',error);   

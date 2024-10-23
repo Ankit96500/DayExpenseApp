@@ -20,6 +20,10 @@ User.init(
       //   this.setDataValue("password", hash(value));
       // },
     },
+    isPremiumUser :{
+      type:DataTypes.BOOLEAN,
+      defaultValue:false
+    }
   },
   {
     freezeTableName: true,
