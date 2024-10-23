@@ -18,3 +18,8 @@
 
 # Daily Expense App features added(navbar)
 ![Annotation 2024-10-22 145223](https://github.com/user-attachments/assets/ab35bb11-469c-4923-ae6d-e0e33868698e)
+
+# buy Premium membership 
+![Annotation 2024-10-23 214811](https://github.com/user-attachments/assets/ecc122c5-ec39-4b7a-8eae-47ada051caaa)
+![Annotation 2024-10-23 214840](https://github.com/user-attachments/assets/3a92fa65-482a-4cd5-9787-6489d6a99abd)
+
