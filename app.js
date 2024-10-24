@@ -22,10 +22,12 @@ import sequelize from "./config/database.js";
 import adminRoutes from "./routes/admin.js";
 import expenseRoutes from "./routes/expenseR.js";
 import buyPremiumRoutes from "./routes/buyPremiumR.js"
+import premiumFeature from "./routes/premiumFeatureR.js"
 
 app.use("/buy-premium", buyPremiumRoutes);
 app.use("/admin", adminRoutes);
 app.use("/expense", expenseRoutes);
+app.use("/premium-feature",premiumFeature)
 
 
 
@@ -57,8 +59,8 @@ Orders.belongsTo(User,{
 
 
 // we ceate user if no user we have and cart also
-// Orders.sync({force:true})
-// User.sync({alter:true})
+// Expense.sync({force:true})
+// User.sync({force:true})
 sequelize
   // .sync({force:true})
   .sync()

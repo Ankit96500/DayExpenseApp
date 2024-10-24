@@ -7,7 +7,7 @@ function getLeaderBoardData(params) {
     const token = localStorage.getItem('token')
     
     try {
-          axios.get("http://localhost:3000/buy-premium/get-leaderboard-data",
+          axios.get("http://localhost:3000/premium-feature/get-leaderboard-data",
       { headers: { Authorization: token } })
           .then(response=>{
             console.log('response comig from the server',response); 

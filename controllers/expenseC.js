@@ -4,6 +4,7 @@ import User from "../models/user.js";
 
 export const getdata = async (req,res)=>{
     // console.log('inside the requser',req.user.id);
+
     try {
         const dt = await User.findOne(
             {
@@ -23,15 +24,23 @@ export const adddata = (req,res)=>{
     // console.log('add data->',req.user.id);
     const userid = req.user.id
     const {expense_amount,desc,category} = req.body
+
     Expense.create({
         expense_amount:expense_amount,
         desc:desc,
         category:category,
         UserID:userid
     })
-    .then(result =>{
-        // console.log('D',result);
-        res.json({'msg':"ok Data Created.."})
+    .then(()=>{
+        // update  total expense in user model  
+        let user = req.user
+        user.total_expense += Number(expense_amount)
+        user.save().then(()=>{
+            res.json({'msg':"ok Data Created.."})
+        })
+        .catch(err=>{throw new Error(err);
+        })
+
     })
     .catch(error =>{
         res.status(401).json({error:"Not Created.. Please Check The Fields."})

@@ -23,6 +23,10 @@ User.init(
     isPremiumUser :{
       type:DataTypes.BOOLEAN,
       defaultValue:false
+    },
+    total_expense:{
+      type:DataTypes.INTEGER,
+      defaultValue : 0
     }
   },
   {

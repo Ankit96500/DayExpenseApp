@@ -2,8 +2,7 @@ import Razorpay from "razorpay";
 import dotenv from "dotenv";
 import Orders from "../models/ordersM.js";
 import User from "../models/user.js";
-import Expense from "../models/expenseM.js";
-import Sequelize from 'sequelize';
+
 
 dotenv.config()
 
@@ -111,54 +110,4 @@ export const transactionFailed = async (req,res)=>{
 
 }
 
-
-
-// premiummemebership features
-
-export const LeaderBoard = async (req,res)=>{
-    try {
-        res.status(201).json({data:"fetch leader borad data"})
-    } catch (error) {
-      res.status(401).json({error:error})
-    }
-}
-
-
-export const getLeaderBoardData =  async (req,res)=>{
-      try {
-        const data = await User.findAll({
-          include:{
-            model:Expense,
-            as:"expensetb",
-            attributes:[]
-          },
-          attributes:[
-            
-            'name',
-            [Sequelize.fn('sum',Sequelize.col('expensetb.expense_amount')),'total_expense']
-          ],
-          group:['User.id'],
-          order:[[Sequelize.fn('sum',Sequelize.col('expensetb.expense_amount')),'ASC']]
-
-        })
-
-        const ldata = data.map((user,index)=>({
-          'S.no':index+1,
-          name:user.name,
-        
-          // this is not a regular attribute, so that why, we use getdatavalue, check on chatGPT
-          total_expense:user.getDataValue('total_expense')
-        
-        }))
-        
-
-        // console.log('--->',JSON.stringify(ldata));
-        res.status(201).json({data:ldata})
-        
-    } catch (error) {
-      console.log('err---',error);
-      
-      res.status(401).json({error:error})
-    }
-}
 

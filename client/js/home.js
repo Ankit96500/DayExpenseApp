@@ -169,9 +169,9 @@ buyPremium.addEventListener("click", async (e) => {
 leaderboard.addEventListener("click",async (e) =>{
     const token = localStorage.getItem('token')
   try {
-        axios.get("http://localhost:3000/buy-premium/leaderboard",
+        axios.get("http://localhost:3000/premium-feature/leaderboard",
     { headers: { Authorization: token } })
-        .then(response=>{
+        .then(()=>{
           window.location.href = "../home/leaderboard.html"
         })
         .catch(err=>{
