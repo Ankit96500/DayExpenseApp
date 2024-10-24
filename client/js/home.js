@@ -15,8 +15,7 @@ let editingId = null; // To track which expense is being edited
 // Function to render the expenses from the API
 function renderExpenses() {
   const token = localStorage.getItem("token");
-  const res = axios
-    .get(`${API_URL}/get_dt`, { headers: { Authorization: token } })
+  axios.get(`${API_URL}/get_dt`, { headers: { Authorization: token } })
     .then((response) => {
       expenseList.innerHTML = "";
       const expenses = response.data.data;
@@ -30,10 +29,15 @@ function renderExpenses() {
       if (response.data.user['isPremiumUser']) {
           // console.log('yes yeh premium user jhai');
           const buyPremium = document.getElementById("rzp-button1");
+          const ribbon = document.getElementById("ribbon")
+          const leaderboard = document.getElementById("leaderboard")
             // Hide the membership button
            if (buyPremium) {
             buyPremium.style.display = 'none'; // Hide the button
-            }
+            ribbon.innerHTML="Congratulation You Have Become Premium User !!"
+            leaderboard.innerText="LeaderBoard"
+          }
+            
         } 
 
 
@@ -135,7 +139,7 @@ buyPremium.addEventListener("click", async (e) => {
       );
 
       console.log("reponse coming from server..", res);
-      alert("you payemnt successfully done");
+      // alert("you payemnt successfully done");
     },
   };
 
@@ -160,6 +164,31 @@ buyPremium.addEventListener("click", async (e) => {
     alert("Oops Payment Failed...");
   });
 });
+
+
+leaderboard.addEventListener("click",async (e) =>{
+    const token = localStorage.getItem('token')
+  try {
+        axios.get("http://localhost:3000/buy-premium/leaderboard",
+    { headers: { Authorization: token } })
+        .then(response=>{
+          window.location.href = "../home/leaderboard.html"
+        })
+        .catch(err=>{
+          throw new Error(err);
+        })
+
+    } catch (error) {
+      console.log('ledaer borad data not fetch');
+      
+    }
+});
+
+
+
+
+
+
 
 // Add event listener to the add button
 addBtn.addEventListener("click", addExpense);

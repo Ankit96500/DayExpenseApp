@@ -27,7 +27,7 @@ function LoginUser(LoginUserData) {
     const e  = document.getElementById('error')
     axios.post('http://localhost:3000/admin/login-user',LoginUserData)
     .then(response =>{
-        alert('User Login SUccessfully')
+        // alert('User Login SUccessfully')
         // Redirect to another HTML page
         console.log(response.data.token);
         localStorage.setItem('token',response.data.token);
