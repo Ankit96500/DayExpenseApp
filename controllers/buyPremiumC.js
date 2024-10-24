@@ -113,7 +113,7 @@ export const transactionFailed = async (req,res)=>{
 
 
 
-// premiummemebership features
+// premium memebership features (Leaderboard Optimization)
 
 export const LeaderBoard = async (req,res)=>{
     try {
