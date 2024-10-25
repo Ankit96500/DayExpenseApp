@@ -60,7 +60,6 @@ function getLeaderBoardData(params) {
 }
 
 
-
 getLeaderBoardData();
 
 

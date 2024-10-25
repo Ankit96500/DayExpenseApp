@@ -23,12 +23,13 @@ import adminRoutes from "./routes/admin.js";
 import expenseRoutes from "./routes/expenseR.js";
 import buyPremiumRoutes from "./routes/buyPremiumR.js"
 import premiumFeature from "./routes/premiumFeatureR.js"
+import password from "./routes/resetPasswordR.js"
 
 app.use("/buy-premium", buyPremiumRoutes);
 app.use("/admin", adminRoutes);
 app.use("/expense", expenseRoutes);
 app.use("/premium-feature",premiumFeature)
-
+app.use("/password",password)
 
 
 
