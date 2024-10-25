@@ -9,7 +9,7 @@ const categoryInput = document.getElementById("category");
 const addBtn = document.getElementById("add-btn");
 const expenseList = document.getElementById("expense-list");
 const buyPremium = document.getElementById("rzp-button1");
-
+const errorid = document.getElementById('error');
 let editingId = null; // To track which expense is being edited
 
 // Function to render the expenses from the API
@@ -89,7 +89,8 @@ function addExpense() {
       clearForm();
     })
     .catch((error) => {
-      console.error("Error adding expense", error);
+      errorid.innerHTML = error.response.data.error
+      // console.error("Error adding expense", error);
     });
 }
 
@@ -104,13 +105,14 @@ function clearForm() {
 
 // Function to delete an expense
 function deleteExpense(id) {
+  const token = localStorage.getItem("token");
   axios
-    .delete(`${API_URL}/delete_dt/${id}`)
+    .delete(`${API_URL}/delete_dt/${id}`,{headers: { Authorization: token }})
     .then(() => {
       renderExpenses();
     })
     .catch((error) => {
-      console.error("Error deleting expense", error);
+      errorid.innerHTML = error.response.data.error
     });
 }
 

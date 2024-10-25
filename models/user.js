@@ -16,9 +16,6 @@ User.init(
     email: { type: DataTypes.STRING, unique: true },
     password: {
       type: DataTypes.STRING,
-      // set(value) {
-      //   this.setDataValue("password", hash(value));
-      // },
     },
     isPremiumUser :{
       type:DataTypes.BOOLEAN,

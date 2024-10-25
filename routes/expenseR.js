@@ -12,7 +12,7 @@ router.get('/get_dt',UserAuthorized,getdata)
 
 router.post('/add_dt',UserAuthorized,adddata)
 
-router.delete('/delete_dt/:id',deletedata)
+router.delete('/delete_dt/:id',UserAuthorized,deletedata)
 
 
 

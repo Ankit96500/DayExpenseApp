@@ -1,6 +1,8 @@
-import { Sequelize } from "sequelize";
+import { Sequelize} from "sequelize";
+import sequelize from "../config/database.js";
 import Expense from "../models/expenseM.js";
 import User from "../models/user.js";
+
 
 export const getdata = async (req,res)=>{
     // console.log('inside the requser',req.user.id);
@@ -20,47 +22,60 @@ export const getdata = async (req,res)=>{
     }
 }
 
-export const adddata = (req,res)=>{
+export const adddata = async (req,res)=>{
     // console.log('add data->',req.user.id);
     const userid = req.user.id
     const {expense_amount,desc,category} = req.body
-
-    Expense.create({
+    const t = await sequelize.transaction();
+    try {
+        await Expense.create({
         expense_amount:expense_amount,
         desc:desc,
         category:category,
         UserID:userid
-    })
-    .then(()=>{
-        // update  total expense in user model  
-        let user = req.user
+        },{transaction:t})
+
+        let user =  req.user
         user.total_expense += Number(expense_amount)
-        user.save().then(()=>{
-            res.json({'msg':"ok Data Created.."})
-        })
-        .catch(err=>{throw new Error(err);
-        })
+        await user.save({transaction:t})
+        await t.commit();
+        res.status(201).json({'msg':"ok Data Created.."})
 
-    })
-    .catch(error =>{
-        res.status(401).json({error:"Not Created.. Please Check The Fields."})
-    })
-
-    // res.json({'id':"ok..jkj"})
+    } catch (error) {
+        await t.rollback();
+        // Log and send error response
+        console.error('Error:', error);
+        res.status(500).json({ error: 'Failed to add expense. Please try again later.' });
+    }
 }
 
-export const deletedata = (req,res)=>{
-    // console.log('--------------',req.params);
+export const deletedata = async (req,res)=>{
+    const t  = await sequelize.transaction();
     const id = req.params.id
-    Expense.findByPk(id)
-    .then(expense =>{
-        expense.destroy()
-        res.json({'msg':"ok Data Deleted.."})
-    })
-    .catch(err =>{
-        res.json({'msg':"Not  Deleted.."})
-        // console.log('not Deleted..',err);
-    })
+    console.log('--------------',req.params);
+    try {
+        const expense = await Expense.findByPk(id)
+        
+        if (!expense) {
+            return res.status(404).json({ msg: "Expense not found." });
+        }
+
+        let user = req.user
+        user.total_expense -= Number(expense.expense_amount) 
+        await user.save({transaction:t})
+
+        await expense.destroy({transaction:t})
+
+        // Commit the transaction if everything is successful
+        await t.commit();
+
+        res.status(201).json({'msg':"ok Data Deleted.."})
+    } catch (error) {
+        console.log('errroor',error);
+        
+        await t.rollback();
+        res.status(500).json({ error: "Failed to delete expense. Please try again later." });
+    }
 
 }
 
