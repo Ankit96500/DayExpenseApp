@@ -1,14 +1,15 @@
 
 import { Router } from 'express';
 
-import {resetForgetPassword} from '../controllers/passwordResetC.js';
-import { UserAuthorized } from '../middleware/authorize.js';
+import {resetForgetPassword,resetRequestPassword} from '../controllers/passwordResetC.js';
 
 
 const router = Router();
 
 // redirect to leader board
-router.post("/forgotpassword",UserAuthorized,resetForgetPassword)
+router.post("/forgotpassword",resetForgetPassword)
+
+router.get("/resetpassword",resetRequestPassword)
 
 
 export default router;

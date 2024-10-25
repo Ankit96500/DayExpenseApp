@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         console.log("show me user d=email",UserData);
         
         try {
-            const response = await axios.post('http://localhost:3000/password/forgotpassword',UserData,{headers: { Authorization: token }})
+            const response = await axios.post('http://localhost:3000/password/forgotpassword',UserData)
 
             console.log('upcoming server resposne',response);
             

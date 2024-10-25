@@ -4,6 +4,8 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();
+// console.log(process.env.SECRET_KEY);
+
 
 const app = express();
 
