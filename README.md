@@ -27,3 +27,9 @@
 ![Annotation 2024-10-24 163626](https://github.com/user-attachments/assets/611d921d-36fc-4811-9583-e9945e9d4a27)
 ![Annotation 2024-10-24 163609](https://github.com/user-attachments/assets/c230f865-90e1-4297-97b2-4eadf6252801)
 
+# Password-reset button 
+![Annotation 2024-10-25 164018](https://github.com/user-attachments/assets/733b79d7-f026-4fc5-a3bf-86205c52e347)
+
+# Password-reset-form
+![Annotation 2024-10-25 164031](https://github.com/user-attachments/assets/e65e9c9e-0d45-48df-acd7-b379f946bc7d)
+
