@@ -1,7 +1,7 @@
 
 import { Router } from 'express';
 
-import {resetForgetPassword,resetRequestPassword} from '../controllers/passwordResetC.js';
+import {resetForgetPassword,resetRequestPassword,resetPasswordDone} from '../controllers/passwordResetC.js';
 
 
 const router = Router();
@@ -9,7 +9,9 @@ const router = Router();
 // redirect to leader board
 router.post("/forgotpassword",resetForgetPassword)
 
-router.get("/resetpassword",resetRequestPassword)
+router.get("/resetpassword/:token",resetRequestPassword)
+
+router.post("/reset-password-done/:token",resetPasswordDone)
 
 
 export default router;

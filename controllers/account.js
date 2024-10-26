@@ -55,7 +55,7 @@ export async function postLoginUser(req, res) {
 
     // If the password does not match
     if (!isPasswordMatch) {
-      return res.status(401).json({ error: "Type correct password" });
+      return res.status(401).json({ error: "Incorrect password" });
     }
     // If both email and password are correct, send the user data as the response
       JWT.sign({ userID: user.id, name: user.name },process.env.JWT_SECRET_KEY,(err, token) => {

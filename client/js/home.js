@@ -9,37 +9,36 @@ const categoryInput = document.getElementById("category");
 const addBtn = document.getElementById("add-btn");
 const expenseList = document.getElementById("expense-list");
 const buyPremium = document.getElementById("rzp-button1");
-const errorid = document.getElementById('error');
+const errorid = document.getElementById("error");
 let editingId = null; // To track which expense is being edited
 
 // Function to render the expenses from the API
 function renderExpenses() {
   const token = localStorage.getItem("token");
-  axios.get(`${API_URL}/get_dt`, { headers: { Authorization: token } })
+  axios
+    .get(`${API_URL}/get_dt`, { headers: { Authorization: token } })
     .then((response) => {
       expenseList.innerHTML = "";
       const expenses = response.data.data;
-      console.log('upcomming response from server',response.data.user);
-      
+      console.log("upcomming response from server", response.data.user);
+
       //display username
-      const usnm = document.getElementById('username')
-      usnm.innerHTML = response.data.user['name']
+      const usnm = document.getElementById("username");
+      usnm.innerHTML = response.data.user["name"];
 
       // if isPremiumUser hide membership button
-      if (response.data.user['isPremiumUser']) {
-          // console.log('yes yeh premium user jhai');
-          const buyPremium = document.getElementById("rzp-button1");
-          const ribbon = document.getElementById("ribbon")
-          const leaderboard = document.getElementById("leaderboard")
-            // Hide the membership button
-           if (buyPremium) {
-            buyPremium.style.display = 'none'; // Hide the button
-            ribbon.innerHTML="Congratulation You Have Become Premium User !!"
-            leaderboard.innerText="LeaderBoard"
-          }
-            
-        } 
-
+      if (response.data.user["isPremiumUser"]) {
+        // console.log('yes yeh premium user jhai');
+        const buyPremium = document.getElementById("rzp-button1");
+        const ribbon = document.getElementById("ribbon");
+        const leaderboard = document.getElementById("leaderboard");
+        // Hide the membership button
+        if (buyPremium) {
+          buyPremium.style.display = "none"; // Hide the button
+          ribbon.innerHTML = "Congratulation You Have Become Premium User !!";
+          leaderboard.innerText = "LeaderBoard";
+        }
+      }
 
       if (Array.isArray(expenses)) {
         expenses.forEach((expense) => {
@@ -62,7 +61,7 @@ function renderExpenses() {
 }
 
 // Function to add or edit an expense
-function addExpense() {
+async function addExpense() {
   console.log("add expense calling finxtio n");
 
   const expense_amount = expenseInput.value;
@@ -74,24 +73,22 @@ function addExpense() {
     return;
   }
 
-  const expense = {
-    expense_amount,
-    desc,
-    category,
-  };
+  const expense = {expense_amount,desc,category,};
 
   const token = localStorage.getItem("token");
+  
   // Adding a new expense
-  axios
-    .post(`${API_URL}/add_dt`, expense, { headers: { Authorization: token } })
-    .then(() => {
+  try {
+    const response = await axios.post(`${API_URL}/add_dt`, expense, { headers: { Authorization: token } })
+    if (response) {
       renderExpenses();
-      clearForm();
-    })
-    .catch((error) => {
-      errorid.innerHTML = error.response.data.error
-      // console.error("Error adding expense", error);
-    });
+      clearForm();      
+    }
+    
+  } catch (error) {
+    errorid.innerHTML = error.response.data.error;
+    
+  }
 }
 
 // Function to clear the form
@@ -107,12 +104,12 @@ function clearForm() {
 function deleteExpense(id) {
   const token = localStorage.getItem("token");
   axios
-    .delete(`${API_URL}/delete_dt/${id}`,{headers: { Authorization: token }})
+    .delete(`${API_URL}/delete_dt/${id}`, { headers: { Authorization: token } })
     .then(() => {
       renderExpenses();
     })
     .catch((error) => {
-      errorid.innerHTML = error.response.data.error
+      errorid.innerHTML = error.response.data.error;
     });
 }
 
@@ -140,8 +137,7 @@ buyPremium.addEventListener("click", async (e) => {
         { headers: { Authorization: token } }
       );
 
-      console.log("reponse coming from server..", res);
-      // alert("you payemnt successfully done");
+      window.location.reload(); // reload the page
     },
   };
 
@@ -152,45 +148,40 @@ buyPremium.addEventListener("click", async (e) => {
 
   // if payement failed..
   rzp1.on("payment.failed", async function (params) {
-    await axios.post(
-      "http://localhost:3000/buy-premium/transaction-failed",
-      { order_id: options.order_id },
-      { headers: { Authorization: token } }
-    ).then(response=>{
-        console.log("payment failed..",response);
-    }).catch(error=>{
+    await axios
+      .post(
+        "http://localhost:3000/buy-premium/transaction-failed",
+        { order_id: options.order_id },
+        { headers: { Authorization: token } }
+      )
+      .then((response) => {
+        console.log("payment failed..", response);
+      })
+      .catch((error) => {
         console.log(error);
-        
-    })
+      });
 
     alert("Oops Payment Failed...");
   });
 });
 
-
-leaderboard.addEventListener("click",async (e) =>{
-    const token = localStorage.getItem('token')
+leaderboard.addEventListener("click", async (e) => {
+  const token = localStorage.getItem("token");
   try {
-        axios.get("http://localhost:3000/premium-feature/leaderboard",
-    { headers: { Authorization: token } })
-        .then(()=>{
-          window.location.href = "../home/leaderboard.html"
-        })
-        .catch(err=>{
-          throw new Error(err);
-        })
-
-    } catch (error) {
-      console.log('ledaer borad data not fetch');
-      
-    }
+    axios
+      .get("http://localhost:3000/premium-feature/leaderboard", {
+        headers: { Authorization: token },
+      })
+      .then(() => {
+        window.location.href = "../home/leaderboard.html";
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  } catch (error) {
+    console.log("ledaer borad data not fetch");
+  }
 });
-
-
-
-
-
-
 
 // Add event listener to the add button
 addBtn.addEventListener("click", addExpense);

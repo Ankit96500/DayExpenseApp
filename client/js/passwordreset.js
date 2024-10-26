@@ -26,13 +26,12 @@ document.addEventListener('DOMContentLoaded',()=>{
     
     // Call the API (POST)
    async function PasswordReset(UserData) {
-        const token = localStorage.getItem("token");
-        console.log("show me user d=email",UserData);
+        console.log("show me user demail",UserData);
         
         try {
             const response = await axios.post('http://localhost:3000/password/forgotpassword',UserData)
-
-            console.log('upcoming server resposne',response);
+            alert(`Please Check Your Gmail ${response.data.data}`)
+            // console.log('upcoming server resposne',response.data);
             
 
         } catch (error) {

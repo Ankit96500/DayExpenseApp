@@ -23,19 +23,17 @@ function handleFormLogin(event){
 
 // login a user (POST)
 
-function LoginUser(LoginUserData) {
+async function LoginUser(LoginUserData) {
     const e  = document.getElementById('error')
-    axios.post('http://localhost:3000/admin/login-user',LoginUserData)
-    .then(response =>{
-        // alert('User Login SUccessfully')
-        // Redirect to another HTML page
+    try {
+        const response = await axios.post('http://localhost:3000/admin/login-user',LoginUserData)
         console.log(response.data.token);
         localStorage.setItem('token',response.data.token);
+        // Redirect to another HTML page
         window.location.href = "../home/home.html"; 
-    })
-    .catch(error =>{
+    } catch (error) {
         e.innerHTML = error.response.data.error
-    });
+    }
 }
 
 
