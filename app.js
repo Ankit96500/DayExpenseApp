@@ -30,12 +30,15 @@ import expenseRoutes from "./routes/expenseR.js";
 import buyPremiumRoutes from "./routes/buyPremiumR.js"
 import premiumFeature from "./routes/premiumFeatureR.js"
 import password from "./routes/resetPasswordR.js"
+import showexpense from "./routes/showExpenseR.js"
+
 
 app.use("/buy-premium", buyPremiumRoutes);
 app.use("/admin", adminRoutes);
 app.use("/expense", expenseRoutes);
 app.use("/premium-feature",premiumFeature)
 app.use("/password",password)
+app.use("/show-expense",showexpense)
 
 
 
@@ -76,12 +79,9 @@ Password.belongsTo(User,{
 })
 
 
-
-
-
 // we ceate user if no user we have and cart also
 // Expense.sync({force:true})
-// Password.sync({force:true})
+// User.sync({alt:true})
 sequelize
   // .sync({force:true})
   .sync()

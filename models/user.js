@@ -24,6 +24,9 @@ User.init(
     total_expense:{
       type:DataTypes.INTEGER,
       defaultValue : 0
+    },
+    income:{
+      type:DataTypes.INTEGER,allowNull:false
     }
   },
   {

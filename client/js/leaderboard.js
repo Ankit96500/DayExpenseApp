@@ -3,13 +3,13 @@
 console.log("java script is working");
 
 
-function getLeaderBoardData(params) {
+async function getLeaderBoardData(params) {
     const token = localStorage.getItem('token')
     
     try {
-          axios.get("http://localhost:3000/premium-feature/get-leaderboard-data",
+          const response = await axios.get("http://localhost:3000/premium-feature/get-leaderboard-data",
       { headers: { Authorization: token } })
-          .then(response=>{
+          if (response){
             console.log('response comig from the server',response); 
             const leaderboard = response.data.data
             if (Array.isArray(leaderboard)) {
@@ -43,18 +43,12 @@ function getLeaderBoardData(params) {
 
                     // Append the row to the table body
                     tbody.appendChild(row);
-                });
-                
+                });    
             }
-
-
-          })
-          .catch(err=>{
-            throw new Error(err);
-          })
+          }
   
       } catch (error) {
-        console.log('ledaer borad data not fetch');
+        console.log('leaderboard data not fetch');
         
       }
 }

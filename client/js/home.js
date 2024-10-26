@@ -13,11 +13,11 @@ const errorid = document.getElementById("error");
 let editingId = null; // To track which expense is being edited
 
 // Function to render the expenses from the API
-function renderExpenses() {
+async function renderExpenses() {
   const token = localStorage.getItem("token");
-  axios
-    .get(`${API_URL}/get_dt`, { headers: { Authorization: token } })
-    .then((response) => {
+  try {
+    const response = await axios.get(`${API_URL}/get_dt`, { headers: { Authorization: token } })
+    if (response) {
       expenseList.innerHTML = "";
       const expenses = response.data.data;
       console.log("upcomming response from server", response.data.user);
@@ -32,32 +32,35 @@ function renderExpenses() {
         const buyPremium = document.getElementById("rzp-button1");
         const ribbon = document.getElementById("ribbon");
         const leaderboard = document.getElementById("leaderboard");
+        const showexpense = document.getElementById("showexpense")
+        
         // Hide the membership button
         if (buyPremium) {
           buyPremium.style.display = "none"; // Hide the button
           ribbon.innerHTML = "Congratulation You Have Become Premium User !!";
           leaderboard.innerText = "LeaderBoard";
+          showexpense.innerText = "ShowExpense";
         }
       }
-
       if (Array.isArray(expenses)) {
         expenses.forEach((expense) => {
           const li = document.createElement("li");
-          li.innerHTML = `
-                        ${expense.expense_amount} - ${expense.desc} (${expense.category})
-                        <span>
-                            <button onclick="deleteExpense('${expense.id}')">Delete Expense</button>
-                        </span>
-                    `;
+          li.innerHTML = `${expense.expense_amount} - ${expense.desc} (${expense.category})
+          <span>
+            <button onclick="deleteExpense('${expense.id}')">Delete Expense</button>
+          </span> `;
           expenseList.appendChild(li);
         });
       }
-    })
-    .catch((error) => {
-      const e = document.getElementById("error");
-      e.innerHTML = error;
-      // console.error("Error fetching expenses", error.response.data.error);
-    });
+
+    }
+    
+  } catch (error) {
+    const e = document.getElementById("error");
+    e.innerHTML = error;
+    // console.error("Error fetching expenses", error.response.data.error);
+  }
+  
 }
 
 // Function to add or edit an expense
@@ -101,16 +104,15 @@ function clearForm() {
 // Function to edit an expense
 
 // Function to delete an expense
-function deleteExpense(id) {
+async function deleteExpense(id) {
   const token = localStorage.getItem("token");
-  axios
-    .delete(`${API_URL}/delete_dt/${id}`, { headers: { Authorization: token } })
-    .then(() => {
-      renderExpenses();
-    })
-    .catch((error) => {
-      errorid.innerHTML = error.response.data.error;
-    });
+  try {
+    await axios.delete(`${API_URL}/delete_dt/${id}`, { headers: { Authorization: token } })
+    renderExpenses();
+    
+  } catch (error) {
+    errorid.innerHTML = error.response.data.error;
+  }
 }
 
 // function buy premium handeler
@@ -165,23 +167,51 @@ buyPremium.addEventListener("click", async (e) => {
   });
 });
 
+// redirect leaderboard
 leaderboard.addEventListener("click", async (e) => {
   const token = localStorage.getItem("token");
   try {
-    axios
-      .get("http://localhost:3000/premium-feature/leaderboard", {
+    await axios.get("http://localhost:3000/premium-feature/leaderboard", {
         headers: { Authorization: token },
       })
-      .then(() => {
-        window.location.href = "../home/leaderboard.html";
-      })
-      .catch((err) => {
-        throw new Error(err);
-      });
+      window.location.href = "../home/leaderboard.html";
   } catch (error) {
-    console.log("ledaer borad data not fetch");
+    console.log("leaderboard borad data not fetch");
   }
 });
+
+//redirect showxpense
+showexpense.addEventListener("click", async (e)=>{
+  const token = localStorage.getItem("token");
+  try {
+    await axios.get("http://localhost:3000/show-expense/user", {
+      headers: { Authorization: token },
+    })
+    window.location.href = "../home/showexpense.html";
+  } catch (error) {
+    console.log('error occur',error);
+  }
+}) 
+
+
+function displayFancyDate() {
+  const dateElement = document.getElementById('fancy-date');
+  const now = new Date();
+  
+  const day = now.getDate();
+  const month = now.toLocaleString('default', { month: 'long' }); // Full month name
+  const year = now.getFullYear();
+
+  // Format the date
+  dateElement.textContent = `📅 ${day} ${month}, ${year}`;
+}
+
+// Trigger the function when the page loads
+window.onload = displayFancyDate;
+
+
+
+
 
 // Add event listener to the add button
 addBtn.addEventListener("click", addExpense);
