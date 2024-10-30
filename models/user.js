@@ -25,7 +25,7 @@ User.init(
       type:DataTypes.INTEGER,
       defaultValue : 0
     },
-    income:{
+    total_income:{
       type:DataTypes.INTEGER,allowNull:false
     }
   },

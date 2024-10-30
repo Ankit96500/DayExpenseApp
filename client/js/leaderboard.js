@@ -1,7 +1,7 @@
 
 
 console.log("java script is working");
-
+const showexpense = document.getElementById("showexpense")
 
 async function getLeaderBoardData(params) {
     const token = localStorage.getItem('token')
@@ -52,6 +52,23 @@ async function getLeaderBoardData(params) {
         
       }
 }
+
+
+
+//redirect showxpense
+showexpense.addEventListener("click", async (e)=>{
+  const token = localStorage.getItem("token");
+  try {
+    await axios.get("http://localhost:3000/show-expense/user", {
+      headers: { Authorization: token },
+    })
+    window.location.href = "../home/showexpense.html";
+  } catch (error) {
+    console.log('error occur',error);
+  }
+}) 
+
+
 
 
 getLeaderBoardData();

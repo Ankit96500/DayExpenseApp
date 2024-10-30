@@ -2,7 +2,10 @@ import { Sequelize} from "sequelize";
 import sequelize from "../config/database.js";
 import Expense from "../models/expenseM.js";
 import User from "../models/user.js";
+import expenseReport from "../models/expensereportM.js";
+import {getS3ObjectUrl,generateFileName,uploadFile} from "../utils/customfun.js"
 
+import dotenv from "dotenv"
 
 export const getdata = async (req,res)=>{
     // console.log('inside the requser',req.user.id);
@@ -78,6 +81,27 @@ export const deletedata = async (req,res)=>{
     }
 
 }
+
+export const downloadReport = async (req,res)=>{
+    
+    try {
+        const expense = await req.user.getExpensetb();
+        const stringifiedData = JSON.stringify(expense)
+        const fileName = generateFileName()
+        
+        await uploadFile(stringifiedData,fileName)
+        
+        const fileURL = getS3ObjectUrl(process.env.AWS_BUCKET,process.env.AWS_REGION,fileName);
+        
+        const r = await req.user.createExpensereporttb({rlink:fileURL})
+       
+        res.status(201).json({data:fileURL,success:true})
+   
+    } catch (error) {
+        res.status(500).json({ error: "Failed to delete expense. Please try again later." });
+    }
+}
+
 
 export const editdata = (req,res)=>{
    

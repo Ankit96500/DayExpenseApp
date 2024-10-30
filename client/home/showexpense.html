@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Show Expense</title>
     <link rel="stylesheet" href="../css/showexpense.css">
+    <!-- Link to FontAwesome for the download icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 </head>
 <body>
       
@@ -27,6 +30,81 @@
 </div>
 
  
+
+  <!-- Display User Summary -->
+  <div class="summary">
+    <p><strong>Name:</strong> <span id="userName"></span></p>
+    <p><strong>Total Income:</strong> $<span id="totalIncome"></span></p>
+    <p><strong>Total Expense:</strong> $<span id="totalExpense"></span></p>
+    <p><strong>Final Balance:</strong> $<span id="finalBalance"></span></p>
+  </div>
+
+  <!-- Expense Table Daily Expense Report-->
+  <table id="expenseTable1" style="margin-bottom: 2cm;">
+    <h2 style="text-align: center;">Daily Expense Report</h2>
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Date</th>
+        <th>Category</th>
+        <th>Description</th>
+        <th>Amount ($)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Dynamically populated content will go here -->
+    </tbody>
+  </table>
+  
+  
+  <!-- Expense Table Weeky Expense Report-->
+  <table id="expenseTable2" style="margin-bottom: 2cm;">
+    <h2 style="text-align: center;">Weekly Expense Report</h2>
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Date</th>
+        <th>Category</th>
+        <th>Description</th>
+        <th>Amount ($)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Dynamically populated content will go here -->
+    </tbody>
+  </table>
+
+  <!-- Expense Table Monthly Expense Report-->
+  <table id="expenseTable3" style="margin-bottom: 2cm;">
+    <h2 style="text-align: center;">Monthly Expense Report</h2>
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Date</th>
+        <th>Category</th>
+        <th>Description</th>
+        <th>Amount ($)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Dynamically populated content will go here -->
+    </tbody>
+  </table>
+
+  <div class="button-container">
+    <button id="downloadBtn" class="download-button">
+        <i class="fas fa-download"></i> Download File
+    </button>
+</div>
+
+<div class="link-container">
+  <p id="link-list">
+    <!--display links  -->
+  </p>
+</div>
+
+
+
   <!-- Axios CDN -->
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="../js/showexpense.js"></script>

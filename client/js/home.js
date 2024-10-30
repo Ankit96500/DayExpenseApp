@@ -7,10 +7,12 @@ const expenseInput = document.getElementById("expense");
 const descriptionInput = document.getElementById("description");
 const categoryInput = document.getElementById("category");
 const addBtn = document.getElementById("add-btn");
+
 const expenseList = document.getElementById("expense-list");
 const buyPremium = document.getElementById("rzp-button1");
 const errorid = document.getElementById("error");
-let editingId = null; // To track which expense is being edited
+
+document.getElementById("income-form").addEventListener("submit",(handleFormIncome));
 
 // Function to render the expenses from the API
 async function renderExpenses() {
@@ -20,7 +22,9 @@ async function renderExpenses() {
     if (response) {
       expenseList.innerHTML = "";
       const expenses = response.data.data;
-      console.log("upcomming response from server", response.data.user);
+
+      //display total incom
+      document.getElementById("showincome").innerHTML = `Total Income : ${response.data.user["total_income"]}`;
 
       //display username
       const usnm = document.getElementById("username");
@@ -31,26 +35,39 @@ async function renderExpenses() {
         // console.log('yes yeh premium user jhai');
         const buyPremium = document.getElementById("rzp-button1");
         const ribbon = document.getElementById("ribbon");
+        
         const leaderboard = document.getElementById("leaderboard");
         const showexpense = document.getElementById("showexpense")
         
         // Hide the membership button
         if (buyPremium) {
           buyPremium.style.display = "none"; // Hide the button
+          leaderboard.style.display = 'inline';
+          showexpense.style.display = 'inline';
+
+
           ribbon.innerHTML = "Congratulation You Have Become Premium User !!";
           leaderboard.innerText = "LeaderBoard";
           showexpense.innerText = "ShowExpense";
         }
+      }else{
+            // Optionally, hide the options if the user is not premium (redundant since they are hidden by default)
+            leaderboard.style.display = "none";
+            showexpense.style.display = "none";
+            buyPremium.style.display = "inline"; // Hide the button
+
       }
+
       if (Array.isArray(expenses)) {
         expenses.forEach((expense) => {
           const li = document.createElement("li");
+          li.classList.add("expense-item");  // Add class for styling
           li.innerHTML = `${expense.expense_amount} - ${expense.desc} (${expense.category})
-          <span>
+          <span class="delete-button">
             <button onclick="deleteExpense('${expense.id}')">Delete Expense</button>
           </span> `;
           expenseList.appendChild(li);
-        });
+        }); 
       }
 
     }
@@ -167,6 +184,36 @@ buyPremium.addEventListener("click", async (e) => {
   });
 });
 
+async function handleFormIncome(e){
+  e.preventDefault();
+
+  //get token
+  const token = localStorage.getItem('token')
+  
+  const userincome = {
+    income:document.getElementById('income').value
+  };
+  console.log('userincome',userincome);
+  
+  // take display income object
+  const showincome = document.getElementById("showincome")
+  showincome.innerHTML = "";
+  
+  try {
+    const response = await axios.post(`http://localhost:3000/admin/update-income`,userincome,{headers:{'Authorization':token}})
+    showincome.innerHTML= `Total Income : ${response.data.data}`;
+
+    //reset the field:
+    document.getElementById('income-form').reset();
+  
+  } catch (error) {
+    console.log('server error',error);
+        
+  }
+}
+
+
+
 // redirect leaderboard
 leaderboard.addEventListener("click", async (e) => {
   const token = localStorage.getItem("token");
@@ -192,22 +239,6 @@ showexpense.addEventListener("click", async (e)=>{
     console.log('error occur',error);
   }
 }) 
-
-
-function displayFancyDate() {
-  const dateElement = document.getElementById('fancy-date');
-  const now = new Date();
-  
-  const day = now.getDate();
-  const month = now.toLocaleString('default', { month: 'long' }); // Full month name
-  const year = now.getFullYear();
-
-  // Format the date
-  dateElement.textContent = `📅 ${day} ${month}, ${year}`;
-}
-
-// Trigger the function when the page loads
-window.onload = displayFancyDate;
 
 
 

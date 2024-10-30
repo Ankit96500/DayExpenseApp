@@ -16,13 +16,6 @@ app.use(express.static(join(process.cwd(),"public")))
 app.use(bodyParser.json({ extended: false }));
 app.use(cors());
 
-// import models
-import User from "./models/user.js";
-import Expense from "./models/expenseM.js";
-import Orders from "./models/ordersM.js";
-import Password from "./models/passwordresetM.js"
-import sequelize from "./config/database.js";
-
 
 // load routes
 import adminRoutes from "./routes/admin.js";
@@ -40,6 +33,13 @@ app.use("/premium-feature",premiumFeature)
 app.use("/password",password)
 app.use("/show-expense",showexpense)
 
+// import models
+import User from "./models/user.js";
+import Expense from "./models/expenseM.js";
+import Orders from "./models/ordersM.js";
+import Password from "./models/passwordresetM.js"
+import sequelize from "./config/database.js";
+import expenseReport from "./models/expensereportM.js"
 
 
 //establish association
@@ -78,10 +78,22 @@ Password.belongsTo(User,{
   as:"usertb"
 })
 
+// USER <---> EXPENSE-REPORT
+User.hasMany(expenseReport,{
+  foreignKey:'UserID',
+  as:"expensereporttb",
+  onDelete:'CASCADE'
+})
+
+expenseReport.belongsTo(User,{
+  foreignKey:"UserID",
+  as:"usertb"
+})
+
 
 // we ceate user if no user we have and cart also
 // Expense.sync({force:true})
-// User.sync({alt:true})
+// User.sync({alter:true})
 sequelize
   // .sync({force:true})
   .sync()

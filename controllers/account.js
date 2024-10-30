@@ -70,3 +70,19 @@ export async function postLoginUser(req, res) {
     return res.status(500).json({ error: "An error occurred during login" });
   }
 }
+
+
+export async function updateUserIncome(req,res) {
+  const income = req.body.income 
+  try {
+    let user = req.user
+    user.total_income = income
+    user.save();
+    
+    res.status(201).json({data:user.total_income})
+  } catch (error) {
+    res.status(201).json({error:"not Updated User Income"})
+  }
+  
+}
+

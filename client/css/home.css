@@ -16,21 +16,70 @@
 
 .flex-container {
     display: flex;
+    flex-direction: column;       /* Stacks items vertically */
     justify-content: center;  /* Centers horizontally */
     align-items: center;      /* Centers vertically */
     height: 100vh;            /* Full viewport height */
+    padding: 20px;                /* Adds some padding */
+    position: relative;           /* Retains position when adding new expenses */
 }
 
 
 .container {
-    max-width: 400px;
+    max-width: 900px;
     padding: 20px;
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
+    margin-bottom: 20px; /* Adds spacing between container and expense list */
 }
+.expense-list-container {
+    max-width: 900px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-height: 300px;            /* Set a max height for the expense list */
+    overflow-y: auto;             /* Enable scrolling if content exceeds max height */
+
+}
+
+/* Flexbox for individual list items (li) */
+.expense-item {
+    display: flex;                 /* Flexbox for the list item */
+    justify-content: space-between; /* Pushes text left and button right */
+    align-items: center;            /* Vertically centers content */
+    width: 100%;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+/* Style for the delete button container */
+.delete-button {
+    margin-left: auto; /* Ensures button aligns to the right */
+}
+
+/* Additional button styling */
+.delete-button button {
+    background-color: #ff4d4d; /* Red background for delete */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.delete-button button:hover {
+    background-color: #ff1a1a; /* Darker red on hover */
+}
+
 
 
 /* Input fields */
@@ -260,9 +309,11 @@ h2 {
 
 .ribbon{
     color: rgb(255, 0, 0);
+    display: flex;
+    flex-direction: column;       /* Stacks items vertically */
+    justify-content: center;  /* Centers horizontally */
+    align-items: center;      /* Centers vertically */
 }
-
-
 
 
 /* Reset margin and padding for better layout */
@@ -272,36 +323,76 @@ h2 {
     box-sizing: border-box;
 }
 
-date-container{
+/* Main container for income input and display */
+
+.income-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
-    font-family: 'Poppins', sans-serif; /* Stylish font */
-    } 
-     
-
-.fancy-box {
-    background: linear-gradient(135deg, #d154df 0%, #f5576c 100%);
-    padding: 20px 40px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    color: #fff;
-    width: 350px;
-    transition: transform 0.3s ease;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 20vh; /* Full height of the viewport */
 }
 
-.fancy-box:hover {
-    transform: scale(1.05); /* Slight zoom effect on hover */
+.input-group {
+    display: block; /* Allow block elements inside */
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    width: 90%; /* Width of the input group */
+    max-width: 500px; /* Limit the maximum width */
 }
 
-#fancy-date {
-    font-size: 28px;
-    font-weight: 600;
-    letter-spacing: 1px;
+/* Style for the form and inputs */
+.input-group form {
+    display: flex;
+    align-items: center;         /* Vertically align form items */
 }
 
+/* Style for the input label */
+.input-group label {
+    margin-right: 10px;          /* Space between label and input */
+    font-weight: bold;
+}
 
+/* Style for the input fields */
+.input-group input[type="number"] {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    margin-right: 10px;          /* Space between input and button */
+}
+
+.input-group input[type="submit"] {
+    padding: 8px 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.input-group input[type="submit"]:hover {
+    background-color: #45a049;   /* Darker green on hover */
+}
+
+/* Style for the displayed income */
+#showincome {
+    font-weight: bold;
+    margin-left: 20px;
+    white-space: nowrap;         /* Prevent the income text from wrapping */
+}
+
+/* Optional: Adjust form width so it doesn't get too large */
+.input-group form {
+    flex: 1;
+    max-width: 70%;              /* Limit form width, allowing space for income display */
+}
+
+/* Ensure the income display stays on the right */
+#showincome {
+    text-align: right;
+    min-width: 2px;            /* Ensure enough space for the income display */
+}
 

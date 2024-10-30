@@ -17,9 +17,7 @@ export const LeaderBoard = async (req,res)=>{
 export const getLeaderBoardData =  async (req,res)=>{
       try {
         const data = await User.findAll({
-          attributes:[ 
-            'name','total_expense'
-          ],
+          attributes:[ 'name','total_expense'],
           order:[['total_expense','ASC']]
         })
 
