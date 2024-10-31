@@ -36,6 +36,9 @@
 # Expense Report
 ![Annotation 2024-10-30 143812](https://github.com/user-attachments/assets/a1c36e2a-097c-4d7b-84b8-9e2d38da3d93)
 
+# Pagination in expenses
+![Annotation 2024-10-31 113355](https://github.com/user-attachments/assets/55e1377e-a1b2-4d08-a9f1-49dc9b6f1e20)
+
 
 
 
