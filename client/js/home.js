@@ -1,6 +1,13 @@
 // Replace the following URL with your unique CRUD CRUD API endpoint
 const API_URL = "http://localhost:3000/expense";
 
+
+// pagination setup to display expense define globally
+var currentPage = 1;
+var totalPages = 1;
+var limit = localStorage.getItem('limit') || 4  // default value
+
+
 // Get elements from the DOM
 // user input data get
 const expenseInput = document.getElementById("expense");
@@ -21,22 +28,20 @@ const expenseList = document.getElementById("expense-list");
 const prevPageBtn = document.getElementById('prevPage');
 const nextPageBtn = document.getElementById('nextPage');
 const pageInfo = document.getElementById('pageInfo');
+const limitPicker = document.getElementById("limit");
 
 const errorid = document.getElementById("error");
-
-// pagination setup to display expense
-var currentPage = 1;
-var totalPages = 1;
 
 document.getElementById("income-form").addEventListener("submit",(handleFormIncome));
 
 // Function to render to Home page from the API
-async function renderExpenses(page) {
+async function renderHomePage(page) {
   const token = localStorage.getItem("token");
+  // update value dynamically
+  limitPicker.value = limit ? limit : 4;
   try {
-    // url consist: query,header
     
-    const response = await axios.get(`${API_URL}/get_dt?page=${page}&limit=3`,{ headers: { Authorization: token } })
+    const response = await axios.get(`${API_URL}/get_dt?page=${page}&limit=${limit}`,{ headers: { Authorization: token } })
     if (response) {
       console.log('response from server;',response);
       
@@ -112,7 +117,6 @@ async function renderExpenses(page) {
 
 
 
-
 // Function to add or edit an expense
 async function addExpense() {
   console.log("add expense calling finxtio n");
@@ -134,7 +138,7 @@ async function addExpense() {
   try {
     const response = await axios.post(`${API_URL}/add_dt`, expense, { headers: { Authorization: token } })
     if (response) {
-      renderExpenses();
+      renderHomePage();
       clearForm();      
     }
     
@@ -156,7 +160,7 @@ async function deleteExpense(id) {
   const token = localStorage.getItem("token");
   try {
     await axios.delete(`${API_URL}/delete_dt/${id}`, { headers: { Authorization: token } })
-    renderExpenses();
+    renderHomePage();
     
   } catch (error) {
     errorid.innerHTML = error.response.data.error;
@@ -243,7 +247,6 @@ async function handleFormIncome(e){
 }
 
 
-
 // redirect leaderboard
 leaderboard.addEventListener("click", async (e) => {
   const token = localStorage.getItem("token");
@@ -271,22 +274,29 @@ showexpense.addEventListener("click", async (e)=>{
 }) 
 
 
-
 // Handle next page button click
 nextPageBtn.addEventListener('click', () => {
   if (currentPage < totalPages) { 
-    renderExpenses(currentPage + 1);
+    renderHomePage(currentPage + 1,limit);
   }
 });
 
 // Handle previous page button click
 prevPageBtn.addEventListener('click', () => {
   if (currentPage > 1) {
-    renderExpenses(currentPage - 1);
+    renderHomePage(currentPage - 1,limit);
   }
+});
+
+// Add event listener to the number picker (limit input)
+limitPicker.addEventListener('change', () => {
+  limit = parseInt(limitPicker.value);  // Get the selected limit value
+  localStorage.setItem('limit',limit)
+  currentPage = 1;  // Reset to the first page when the limit changes
+  renderHomePage(currentPage);   // Re-render the page with the new limit
 });
 
 
 // Initial rendering of expenses from CRUD CRUD API
-renderExpenses(currentPage);
+renderHomePage(currentPage);
 

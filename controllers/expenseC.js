@@ -18,8 +18,7 @@ export const getdata = async (req,res)=>{
 
         // Fetch total count of records (without pagination, used for frontend display)
         const totalItems = await req.user.countExpensetb();
-        console.log('toalt items',totalItems);
-        
+    
         // Fetch the data with pagination (using offset and limit)
         const data = await req.user.getExpensetb({
             limit:limit,offset:offset
@@ -27,8 +26,7 @@ export const getdata = async (req,res)=>{
 
         // Calculate the total number of pages
         const totalPages = Math.ceil(totalItems / limit);
-        console.log('toalt ppages',totalPages);
-
+    
         // Respond with paginated data, current page info, and total pages
         res.status(200).json({
             data:data,
