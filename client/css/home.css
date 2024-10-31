@@ -43,8 +43,8 @@
     border-radius: 8px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-height: 300px;            /* Set a max height for the expense list */
-    overflow-y: auto;             /* Enable scrolling if content exceeds max height */
+    max-height: 380px;            /* Set a max height for the expense list */
+    /* overflow-y: auto;             Enable scrolling if content exceeds max height */
 
 }
 
@@ -60,6 +60,24 @@
     margin-bottom: 10px;
     border-radius: 5px;
 }
+
+/* pagination */
+.pagination {
+    margin-top: 20px;
+}
+
+.pagination button {
+    padding: 10px 15px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.pagination button[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+
 
 /* Style for the delete button container */
 .delete-button {

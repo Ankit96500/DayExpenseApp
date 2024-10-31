@@ -1,26 +1,45 @@
 // Replace the following URL with your unique CRUD CRUD API endpoint
 const API_URL = "http://localhost:3000/expense";
-console.log("java script is working");
 
 // Get elements from the DOM
+// user input data get
 const expenseInput = document.getElementById("expense");
 const descriptionInput = document.getElementById("description");
 const categoryInput = document.getElementById("category");
 const addBtn = document.getElementById("add-btn");
 
-const expenseList = document.getElementById("expense-list");
+
+// Add event listener to the add button
+addBtn.addEventListener("click", addExpense);
+
+
+// user click premiuim btn get
 const buyPremium = document.getElementById("rzp-button1");
+
+// user expense list get attributes
+const expenseList = document.getElementById("expense-list");
+const prevPageBtn = document.getElementById('prevPage');
+const nextPageBtn = document.getElementById('nextPage');
+const pageInfo = document.getElementById('pageInfo');
+
 const errorid = document.getElementById("error");
+
+// pagination setup to display expense
+var currentPage = 1;
+var totalPages = 1;
 
 document.getElementById("income-form").addEventListener("submit",(handleFormIncome));
 
-// Function to render the expenses from the API
-async function renderExpenses() {
+// Function to render to Home page from the API
+async function renderExpenses(page) {
   const token = localStorage.getItem("token");
   try {
-    const response = await axios.get(`${API_URL}/get_dt`, { headers: { Authorization: token } })
+    // url consist: query,header
+    
+    const response = await axios.get(`${API_URL}/get_dt?page=${page}&limit=3`,{ headers: { Authorization: token } })
     if (response) {
-      expenseList.innerHTML = "";
+      console.log('response from server;',response);
+      
       const expenses = response.data.data;
 
       //display total incom
@@ -58,6 +77,13 @@ async function renderExpenses() {
 
       }
 
+      // pagination configuration setup 
+      currentPage = response.data.currentPage
+      totalPages = response.data.totalPages
+
+      
+      expenseList.innerHTML = "";
+
       if (Array.isArray(expenses)) {
         expenses.forEach((expense) => {
           const li = document.createElement("li");
@@ -70,15 +96,22 @@ async function renderExpenses() {
         }); 
       }
 
+      // Update page info and button states
+      pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+      prevPageBtn.disabled = currentPage === 1;
+      nextPageBtn.disabled = currentPage === totalPages;
+
     }
     
   } catch (error) {
     const e = document.getElementById("error");
     e.innerHTML = error;
-    // console.error("Error fetching expenses", error.response.data.error);
   }
   
 }
+
+
+
 
 // Function to add or edit an expense
 async function addExpense() {
@@ -118,8 +151,6 @@ function clearForm() {
   categoryInput.value = "Others";
 }
 
-// Function to edit an expense
-
 // Function to delete an expense
 async function deleteExpense(id) {
   const token = localStorage.getItem("token");
@@ -139,7 +170,7 @@ buyPremium.addEventListener("click", async (e) => {
     "http://localhost:3000/buy-premium/purchase",
     { headers: { Authorization: token } }
   );
-  console.log("response", response);
+
 
   var options = {
     key: response.data.key_id, // Enter the Key ID generated from the Dashboard
@@ -167,18 +198,17 @@ buyPremium.addEventListener("click", async (e) => {
 
   // if payement failed..
   rzp1.on("payment.failed", async function (params) {
-    await axios
-      .post(
-        "http://localhost:3000/buy-premium/transaction-failed",
-        { order_id: options.order_id },
-        { headers: { Authorization: token } }
-      )
-      .then((response) => {
-        console.log("payment failed..", response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    try {
+      await axios
+        .post(
+          "http://localhost:3000/buy-premium/transaction-failed",
+          { order_id: options.order_id },
+          { headers: { Authorization: token } }
+        )
+      
+    } catch (error) {
+      console.log(error);
+    }
 
     alert("Oops Payment Failed...");
   });
@@ -242,10 +272,21 @@ showexpense.addEventListener("click", async (e)=>{
 
 
 
+// Handle next page button click
+nextPageBtn.addEventListener('click', () => {
+  if (currentPage < totalPages) { 
+    renderExpenses(currentPage + 1);
+  }
+});
 
+// Handle previous page button click
+prevPageBtn.addEventListener('click', () => {
+  if (currentPage > 1) {
+    renderExpenses(currentPage - 1);
+  }
+});
 
-// Add event listener to the add button
-addBtn.addEventListener("click", addExpense);
 
 // Initial rendering of expenses from CRUD CRUD API
-renderExpenses();
+renderExpenses(currentPage);
+

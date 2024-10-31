@@ -1,7 +1,7 @@
 
 import { Router } from 'express';
 
-import {showUserExpense} from '../controllers/showExpenseC.js';
+import {showUserExpense} from '../controllers/expenseReportC.js';
 import { UserAuthorized } from '../middleware/authorize.js';
 
 

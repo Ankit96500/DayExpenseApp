@@ -2,26 +2,43 @@ import { Sequelize} from "sequelize";
 import sequelize from "../config/database.js";
 import Expense from "../models/expenseM.js";
 import User from "../models/user.js";
-import expenseReport from "../models/expensereportM.js";
-import {getS3ObjectUrl,generateFileName,uploadFile} from "../utils/customfun.js"
+import {getS3ObjectUrl,generateFileName} from "../utils/customfun.js"
+import {uploadFile} from "../services/awsS3.js"
 
-import dotenv from "dotenv"
+
 
 export const getdata = async (req,res)=>{
-    // console.log('inside the requser',req.user.id);
-
     try {
-        const dt = await User.findOne(
-            {
-                where:{id:req.user.id},
-            }
-        )
-        // console.log('Data >>>>',JSON.stringify(dt));
-        const data = await dt.getExpensetb()
-        res.status(200).json({data:data,user:dt})
+        //get page and limit for query parametrs --- [pagination code]:
+        const page = parseInt(req.query.page) || 1
+        const limit = parseInt(req.query.limit) || 4
+       
+        // calculate the offset (skip items) for pagination
+        const offset = (page - 1 ) * limit;
+
+        // Fetch total count of records (without pagination, used for frontend display)
+        const totalItems = await req.user.countExpensetb();
+        console.log('toalt items',totalItems);
+        
+        // Fetch the data with pagination (using offset and limit)
+        const data = await req.user.getExpensetb({
+            limit:limit,offset:offset
+        })
+
+        // Calculate the total number of pages
+        const totalPages = Math.ceil(totalItems / limit);
+        console.log('toalt ppages',totalPages);
+
+        // Respond with paginated data, current page info, and total pages
+        res.status(200).json({
+            data:data,
+            currentPage:page,
+            totalItems:totalItems,
+            totalPages:totalPages,
+            user:req.user
+        })
     } catch (error) {
         res.status(404).json({error:"Sorry Try Again.."})
-        // console.log('Not Saved',error);   
     }
 }
 

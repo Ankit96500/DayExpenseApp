@@ -23,7 +23,7 @@ import expenseRoutes from "./routes/expenseR.js";
 import buyPremiumRoutes from "./routes/buyPremiumR.js"
 import premiumFeature from "./routes/premiumFeatureR.js"
 import password from "./routes/resetPasswordR.js"
-import showexpense from "./routes/showExpenseR.js"
+import showexpense from "./routes/expenseReportR.js"
 
 
 app.use("/buy-premium", buyPremiumRoutes);
@@ -104,3 +104,5 @@ sequelize
   .catch((err) => {
     console.log(err);
   });
+
+
