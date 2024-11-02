@@ -1,6 +1,4 @@
 
-
-console.log("java script is working");
 const showexpense = document.getElementById("showexpense")
 
 async function getLeaderBoardData(params) {
@@ -10,10 +8,8 @@ async function getLeaderBoardData(params) {
           const response = await axios.get("http://localhost:3000/premium-feature/get-leaderboard-data",
       { headers: { Authorization: token } })
           if (response){
-            console.log('response comig from the server',response); 
             const leaderboard = response.data.data
             if (Array.isArray(leaderboard)) {
-                console.log('yeh array hai');
                 
                 // Get the table body element
                 const tbody = document.querySelector('#leaderboard-table tbody');
@@ -48,8 +44,7 @@ async function getLeaderBoardData(params) {
           }
   
       } catch (error) {
-        console.log('leaderboard data not fetch');
-        
+        alert(error)
       }
 }
 
@@ -64,7 +59,7 @@ showexpense.addEventListener("click", async (e)=>{
     })
     window.location.href = "../home/showexpense.html";
   } catch (error) {
-    console.log('error occur',error);
+    alert(error)
   }
 }) 
 

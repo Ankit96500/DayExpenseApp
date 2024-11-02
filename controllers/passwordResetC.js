@@ -28,7 +28,7 @@ export const resetForgetPassword = async (req,res)=>{
         // check if valid user
         const user = await User.findOne({where:{ email:email }});
         if (!user) {
-            return res.status(404).json({ error: 'User not found' });
+            return res.status(404).json({ error: 'Enter Valid Email ID' });
         }
         // generate token
         const token = JWT.sign({id:user.id},process.env.JWT_SECRET_KEY)
@@ -50,7 +50,6 @@ export const resetForgetPassword = async (req,res)=>{
 
         try {
             const result = await transporter.sendMail(mailOption)
-            console.log("Message result", result.envelope.to);
             // console.log("Message sent: %s", result.messageId);
             // res.status(201).json({data:"Please Check Your Registered Gmail"})
             res.status(201).json({data:result.envelope.to})
@@ -60,7 +59,6 @@ export const resetForgetPassword = async (req,res)=>{
         }
 
     } catch (error) {
-        console.log('>>>',error);
         res.status(401).json({error:"sorry some server error occur"})
         
     }
@@ -85,20 +83,17 @@ export const resetRequestPassword = async (req,res)=>{
 
         // render password reset form to user
         const resetpasswordform  = path.join(process.cwd(),'public','resetPasswordForm.html')
-        console.log("passwrod reset form",resetpasswordform);
         
         res.sendFile(resetpasswordform);
         // res.status(200).json({ message: 'Password reset successfully.'});
     } catch (error) {
         if (error.name === 'TokenExpiredError') {
             // Handle expired token
-            console.log('show error',error.name);
             
             return res.status(401).json({
                 error: 'Password reset token has expired. Please request a new password reset link.'
             });
         } else {
-            console.error(error);
             return res.status(400).json({ error: 'Token is invalid or has expired.' });
         }
     }
@@ -134,7 +129,6 @@ export const resetPasswordDone = async (req,res)=>{
 
         res.status(200).json({ message: 'Password reset successfully.' });
     } catch (error) {
-        console.error(error);
         res.status(400).json({ error: 'Token is invalid or has expired.' });
     }
    

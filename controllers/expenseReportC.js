@@ -24,11 +24,11 @@ export const showUserExpense = async (req,res) => {
                         sequelize.fn('DATE',sequelize.col('expensetb.createdAt')),'date'
                     ]
                 ],
-                where:{
-                    createdAt:{
-                        [sequelize.Op.between]:[today,moment().endOf('day')],        
-                    }
-                },
+                // where:{
+                //     createdAt:{
+                //         [sequelize.Op.between]:[today,moment().endOf('day')],        
+                //     }
+                // },
             },
             
         ],

@@ -8,7 +8,6 @@ dotenv.config();
 export async function UserAuthorized(req,res,next) {
     try {
         const token = req.header('Authorization')
-        // console.log('check toekn',token);
         
         // verify the token
         const user_ID = JWT.verify(token,process.env.JWT_SECRET_KEY)
@@ -19,8 +18,7 @@ export async function UserAuthorized(req,res,next) {
         next();       
 
     } catch (error) {
-        console.log('not catch by middelware',error); 
-        return res.status(401).json({success:false})
+        return res.status(401).json({success:false,error:error})
     }
 
 }

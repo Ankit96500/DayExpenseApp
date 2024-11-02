@@ -1,4 +1,3 @@
-console.log('i am show expense');
 
 
   // Assuming the data is fetched from an API
@@ -17,12 +16,12 @@ console.log('i am show expense');
         const links = loadData.links
         
         // Set user summary information
-        document.getElementById('userName').textContent = monthlyData.name;
-        document.getElementById('totalIncome').textContent = monthlyData.totalIncome.toFixed(2);
-        document.getElementById('totalExpense').textContent = monthlyData.totalExpense.toFixed(2);
+        document.getElementById('userName').textContent = dailyData.name;
+        document.getElementById('totalIncome').textContent = dailyData.totalIncome.toFixed(2);
+        document.getElementById('totalExpense').textContent = dailyData.totalExpense.toFixed(2);
 
         const finalBalanceElement = document.getElementById('finalBalance');
-        const finalBalance = monthlyData.finalBalance;
+        const finalBalance = dailyData.finalBalance;
         finalBalanceElement.textContent = finalBalance.toFixed(2);
         // console.log('my final balance',finalBalance);
         
@@ -145,14 +144,20 @@ console.log('i am show expense');
 
 
     } catch (error) {
-        console.log("-----",error.response);
+        displayError("An error occurred: Invalid data" + error);  // Example error message
+        function displayError (error) {
+            let err = document.getElementById('custom-alert');
+            err.innerHTML = error;  // Insert error message
+            err.style.display = 'block';  // Show the alert
+            console.log("-----", error.response);  // Log error response
         
-        if (error.response.request.statusText === "Unauthorized") {
-            window.close()
-        } else {
-            console.log('errro from server side',error);
+            // Optionally hide the alert after a few seconds
+            setTimeout(function () {
+                err.style.display = 'none';  // Hide alert after 5 seconds
+            }, 5000);
         }
         
+
     }
   }
 

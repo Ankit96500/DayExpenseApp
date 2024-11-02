@@ -325,14 +325,6 @@ h2 {
     color: #f1f1f1;
 }
 
-.ribbon{
-    color: rgb(255, 0, 0);
-    display: flex;
-    flex-direction: column;       /* Stacks items vertically */
-    justify-content: center;  /* Centers horizontally */
-    align-items: center;      /* Centers vertically */
-}
-
 
 /* Reset margin and padding for better layout */
 * {
@@ -346,8 +338,8 @@ h2 {
 .income-container {
     display: flex;
     justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    height: 20vh; /* Full height of the viewport */
+    /* align-items: center; Center vertically */
+    height: 12vh;  /*Full height of the viewport */
 }
 
 .input-group {
@@ -414,3 +406,44 @@ h2 {
     min-width: 2px;            /* Ensure enough space for the income display */
 }
 
+/* ribbon */
+#ribbon {
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #e74c3c; /* Ribbon background color */
+    color: white; /* Text color */
+    font-weight: bold;
+    font-size: 16px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  #ribbon:before, #ribbon:after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    border-style: solid;
+    border-width: 10px;
+    border-color: #e74c3c transparent transparent transparent;
+  }
+  
+  #ribbon:before {
+    left: 0;
+    transform: translateX(-50%);
+  }
+  
+  #ribbon:after {
+    right: 0;
+    transform: translateX(50%);
+  }
+  
+  /* Optional - Add some extra styling for the container */
+  .out-ribbon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1cm;
+    /* height: 100vh; */
+  }
+  

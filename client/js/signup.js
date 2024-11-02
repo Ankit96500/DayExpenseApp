@@ -4,9 +4,7 @@ console.log("JavaScript file is connected!");
 document.addEventListener('DOMContentLoaded', () => {
 
     
-    document.getElementById('signup-form').addEventListener('submit', handleFormSubmit);
-    
-    
+    document.getElementById('signup-form').addEventListener('submit', handleFormSubmit)
     
     // Handle form submission signup
     function handleFormSubmit(event) {
@@ -26,17 +24,24 @@ document.addEventListener('DOMContentLoaded', () => {
     
     
     // Create a new user (POST)
-    function SignupUser(UserData) {
-        axios.post('http://localhost:3000/admin/signup-user',UserData)
-        .then(response => {
-            alert('User Signup Successfully')
-        })
-        .catch(error => {
-            const e = document.getElementById('error')
-            e.innerHTML = error.response.data.error  
-            console.log('Error posting blog:', error.response.data)
-        });
-        
+   async function SignupUser(UserData) {
+        try {
+            await axios.post('http://localhost:3000/admin/signup-user',UserData) 
+            alert('User Has Created Successfully ')
+        } catch (error) {
+            displayError(error);  // Example error message
+            function displayError (error) {
+                let err = document.getElementById('custom-alert');
+                err.innerHTML = error.response.data.error;  // Insert error message
+                err.style.display = 'block';  // Show the alert
+                console.log("-----", error.response);  // Log error response
+            
+                // Optionally hide the alert after a few seconds
+                setTimeout(function () {
+                    err.style.display = 'none';  // Hide alert after 5 seconds
+                }, 5000);
+            }    
+        }        
     }
     
 });

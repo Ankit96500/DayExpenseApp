@@ -6,7 +6,6 @@ import {getS3ObjectUrl,generateFileName} from "../utils/customfun.js"
 import {uploadFile} from "../services/awsS3.js"
 
 
-
 export const getdata = async (req,res)=>{
     try {
         //get page and limit for query parametrs --- [pagination code]:

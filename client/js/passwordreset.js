@@ -35,9 +35,18 @@ document.addEventListener('DOMContentLoaded',()=>{
             
 
         } catch (error) {
-            const e = document.getElementById('error')
-            // e.innerHTML = error.response.data.error  
-            console.log('Error password reset:', error)
+            displayError(error);  // Example error message
+            function displayError (error) {
+            let err = document.getElementById('custom-alert');
+            err.innerHTML = error.response.data.error;  // Insert error message
+            err.style.display = 'block';  // Show the alert
+            console.log("-----", error.response);  // Log error response
+        
+            // Optionally hide the alert after a few seconds
+            setTimeout(function () {
+                err.style.display = 'none';  // Hide alert after 5 seconds
+            }, 5000);
+        }
         }
         
     }

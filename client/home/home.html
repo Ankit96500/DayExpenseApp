@@ -36,8 +36,10 @@
     </div>
 </div>
 
-<div>
-    <span class="ribbon" id="ribbon"></span> <!-- Add this span for the ribbon -->
+<div class="out-ribbon">
+    <span class="ribbon" id="ribbon" style="display: none;">
+        Congratulation You Have Become Premium User !!
+    </span> <!-- Add this span for the ribbon -->
 </div>
 
 <div class="income-container">
@@ -82,9 +84,10 @@
     </div>
 
     <div class="expense-list-container">
+           <!-- error display -->
+      <div id="custom-alert" style="display: none; background-color: red; color: white; padding: 10px; border-radius: 5px; margin: 15px 0;"></div>
+      
         <h2>Expenses</h2>
-        <sub id="error"></sub>
-
 
         <!-- Number picker for setting the limit -->
         <label for="limit">Items per page:</label>

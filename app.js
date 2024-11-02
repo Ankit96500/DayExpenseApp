@@ -3,18 +3,28 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
-dotenv.config();
-// console.log(process.env.SECRET_KEY);
+// use full when do deployment
+import helmet from "helmet";
+import compression from "compression";
+import morgan from "morgan";
+import fs from "fs";
 
 
 const app = express();
 
+
+const accessLogStream = fs.createWriteStream(join(process.cwd(),'access.log'),{flags:'a'});
+
+
 // Serve static files from the 'public' directory
 app.use(express.static(join(process.cwd(),"public")))
 
-// app.use(bodyParser.urlencoded({ extended: false }));
+// connect 3rd parties
 app.use(bodyParser.json({ extended: false }));
 app.use(cors());
+app.use(helmet());
+app.use(compression())
+app.use(morgan('combined',{stream:accessLogStream}));
 
 
 // load routes
@@ -40,6 +50,7 @@ import Orders from "./models/ordersM.js";
 import Password from "./models/passwordresetM.js"
 import sequelize from "./config/database.js";
 import expenseReport from "./models/expensereportM.js"
+import { Stream } from "stream";
 
 
 //establish association

@@ -43,7 +43,6 @@ async function renderHomePage(page) {
     
     const response = await axios.get(`${API_URL}/get_dt?page=${page}&limit=${limit}`,{ headers: { Authorization: token } })
     if (response) {
-      console.log('response from server;',response);
       
       const expenses = response.data.data;
 
@@ -70,7 +69,7 @@ async function renderHomePage(page) {
           showexpense.style.display = 'inline';
 
 
-          ribbon.innerHTML = "Congratulation You Have Become Premium User !!";
+          ribbon.style.display ="inline";
           leaderboard.innerText = "LeaderBoard";
           showexpense.innerText = "ShowExpense";
         }
@@ -109,8 +108,17 @@ async function renderHomePage(page) {
     }
     
   } catch (error) {
-    const e = document.getElementById("error");
-    e.innerHTML = error;
+    displayError(error);  // Example error message
+    function displayError (error) {
+        let err = document.getElementById('custom-alert');
+        err.innerHTML = error;  // Insert error message
+        err.style.display = 'block';  // Show the alert
+    
+        // Optionally hide the alert after a few seconds
+        setTimeout(function () {
+            err.style.display = 'none';  // Hide alert after 5 seconds
+        }, 5000);
+    }
   }
   
 }
@@ -170,52 +178,56 @@ async function deleteExpense(id) {
 // function buy premium handeler
 buyPremium.addEventListener("click", async (e) => {
   const token = localStorage.getItem("token");
-  const response = await axios.get(
-    "http://localhost:3000/buy-premium/purchase",
-    { headers: { Authorization: token } }
-  );
-
-
-  var options = {
-    key: response.data.key_id, // Enter the Key ID generated from the Dashboard
-    order_id: response.data.order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-    description: "Test Transaction",
-    // "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
-    handler: async function (res) {
-      await axios.post(
-        "http://localhost:3000/buy-premium/update-transaction-status",
-        {
-          order_id: options.order_id,
-          payment_id: res.razorpay_payment_id,
-        },
-        { headers: { Authorization: token } }
-      );
-
-      window.location.reload(); // reload the page
-    },
-  };
-
-  var rzp1 = new Razorpay(options);
-
-  rzp1.open();
-  e.preventDefault();
-
-  // if payement failed..
-  rzp1.on("payment.failed", async function (params) {
-    try {
-      await axios
-        .post(
-          "http://localhost:3000/buy-premium/transaction-failed",
-          { order_id: options.order_id },
+  try {
+    const response = await axios.get("http://localhost:3000/buy-premium/purchase",{ headers: { Authorization: token } });
+    var options = {
+      key: response.data.key_id, // Enter the Key ID generated from the Dashboard
+      order_id: response.data.order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      description: "Test Transaction",
+      // "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
+      handler: async function (res) {
+        await axios.post(
+          "http://localhost:3000/buy-premium/update-transaction-status",
+          {
+            order_id: options.order_id,
+            payment_id: res.razorpay_payment_id,
+          },
           { headers: { Authorization: token } }
-        )
+        );
+        window.location.reload(); // reload the page
+      },
+    };
+  
+    var rzp1 = new Razorpay(options);
+  
+    rzp1.open();
+    e.preventDefault();
+    
+     // if payement failed..
+    rzp1.on("payment.failed", async function (params) {
+       try {
+         await axios.post("http://localhost:3000/buy-premium/transaction-failed",
+             { order_id: options.order_id },{ headers: { Authorization: token } })
+       } catch (error) {
+         throw new Error(error);
+       }
+      // alert("Oops Payment Failed...");
+    });
+  } catch (error) {
+    displayError(error);  // Example error message
+    function displayError (error) {
+        let err = document.getElementById('custom-alert');
+        err.innerHTML = `${error} Check Your Internet Connection`;  // Insert error message
+        err.style.display = 'block';  // Show the alert
       
-    } catch (error) {
-      console.log(error);
+        // Optionally hide the alert after a few seconds
+        setTimeout(function () {
+            err.style.display = 'none';  // Hide alert after 5 seconds
+        }, 5000);
     }
-
-    alert("Oops Payment Failed...");
-  });
+  }
+  
+  
 });
 
 async function handleFormIncome(e){
@@ -241,7 +253,16 @@ async function handleFormIncome(e){
     document.getElementById('income-form').reset();
   
   } catch (error) {
-    console.log('server error',error);
+    displayError(error);  // Example error message
+    function displayError (error) {
+        let err = document.getElementById('custom-alert');
+        err.innerHTML = `${error} Check Your Internet Connection`;  // Insert error message
+        err.style.display = 'block';  // Show the alert
+        // Optionally hide the alert after a few seconds
+        setTimeout(function () {
+            err.style.display = 'none';  // Hide alert after 5 seconds
+        }, 5000);
+    }
         
   }
 }

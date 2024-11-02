@@ -11,10 +11,6 @@ const saltRounds = 10;
 
 export async function postSignupUser(req, res, next) {
   const { name, email, password } = req.body;
-
-  // if (!name || !email || !password) {
-  //   res.status(400).json({error:"Name, email, and password are required" })
-  // }  no need bcos i handle from frontend
   try {
     const hashpassword = await bcrypt.hash(password, saltRounds);
 
@@ -25,9 +21,9 @@ export async function postSignupUser(req, res, next) {
     });
 
     res.status(201).json({ data: data });
-  } catch (error) {
+  } catch (error) {  
     if (error instanceof Sequelize.UniqueConstraintError) {
-      res.status(400).json({ error: "User Already Exist" });
+      res.status(400).json({ error: 'Email Must Be Unique' });
     } else {
       res.status(500).json({ error: "Something went wrong" });
     }
@@ -66,7 +62,6 @@ export async function postLoginUser(req, res) {
       }
     );
   } catch (error) {
-    console.error("Error during login:", error);
     return res.status(500).json({ error: "An error occurred during login" });
   }
 }
