@@ -13,7 +13,7 @@ import fs from "fs";
 const app = express();
 
 
-const accessLogStream = fs.createWriteStream(join(process.cwd(),'access.log'),{flags:'a'});
+// const accessLogStream = fs.createWriteStream(join(process.cwd(),'access.log'),{flags:'a'});
 
 
 // Serve static files from the 'public' directory
@@ -24,7 +24,7 @@ app.use(bodyParser.json({ extended: false }));
 app.use(cors());
 app.use(helmet());
 app.use(compression())
-app.use(morgan('combined',{stream:accessLogStream}));
+// app.use(morgan('combined',{stream:accessLogStream}));
 
 
 // load routes
@@ -117,3 +117,4 @@ sequelize
   });
 
 
+  
