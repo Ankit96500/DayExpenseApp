@@ -108,7 +108,7 @@ expenseReport.belongsTo(User,{
 sequelize
   // .sync({force:true})
   .sync()
-  .then((res) => {
+  .then(() => {
     console.log("connected db");
     app.listen(3000);
   })
