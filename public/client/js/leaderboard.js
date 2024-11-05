@@ -5,7 +5,7 @@ async function getLeaderBoardData(params) {
     const token = localStorage.getItem('token')
     
     try {
-          const response = await axios.get("http://localhost:3000/premium-feature/get-leaderboard-data",
+          const response = await axios.get("http://13.203.0.136:3000/premium-feature/get-leaderboard-data",
       { headers: { Authorization: token } })
           if (response){
             const leaderboard = response.data.data

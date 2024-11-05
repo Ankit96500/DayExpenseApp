@@ -35,7 +35,7 @@ export const getdata = async (req,res)=>{
             user:req.user
         })
     } catch (error) {
-        res.status(404).json({error:"Sorry Try Again.."})
+        res.status(401).json({error:"Sorry Try Again.."})
     }
 }
 

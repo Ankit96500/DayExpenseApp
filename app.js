@@ -9,7 +9,7 @@ import compression from "compression";
 import morgan from "morgan";
 import fs from "fs";
 
-
+const PORT = 3000 
 const app = express();
 
 
@@ -26,6 +26,11 @@ app.use(helmet());
 app.use(compression())
 // app.use(morgan('combined',{stream:accessLogStream}));
 
+
+// home url
+app.use((req,res)=>{
+  res.redirect('/client/account/login.html')
+})
 
 // load routes
 import adminRoutes from "./routes/admin.js";
@@ -51,7 +56,6 @@ import Password from "./models/passwordresetM.js"
 import sequelize from "./config/database.js";
 import expenseReport from "./models/expensereportM.js"
 import { Stream } from "stream";
-
 
 //establish association
 // USER <--> Expense
@@ -109,8 +113,8 @@ sequelize
   // .sync({force:true})
   .sync()
   .then((res) => {
-    console.log("connected db");
-    app.listen(3000);
+    console.log(`connected db at PORT: ${PORT}`);
+    app.listen(PORT);
   })
   .catch((err) => {
     console.log(err);

@@ -1,5 +1,5 @@
 // Replace the following URL with your unique CRUD CRUD API endpoint
-const API_URL = "http://localhost:3000/expense";
+const API_URL = "http://13.203.0.136:3000/expense";
 
 
 // pagination setup to display expense define globally
