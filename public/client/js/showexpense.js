@@ -5,6 +5,11 @@
   async function getReport() {
     const token = localStorage.getItem('token')
     try {
+        if (token === null) {
+            // if token not available
+            window.location.href = "../account/login.html"
+          } 
+    
         const response = await axios.get("http://13.203.0.136:3000/show-expense/user",{headers:{'Authorization':token}})
         
         const loadData = response.data
@@ -167,6 +172,11 @@
     const token = localStorage.getItem('token')
     
     try {
+        if (token === null) {
+            // if token not available
+            window.location.href = "../account/login.html"
+          } 
+    
         const response = await axios.get("http://13.203.0.136:3000/expense/download-report",{headers:{'Authorization':token}})
         
         console.log('Response received from server', response.data.data);

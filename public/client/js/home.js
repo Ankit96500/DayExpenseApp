@@ -1,4 +1,5 @@
 // Replace the following URL with your unique CRUD CRUD API endpoint
+// const API_URL = "http://13.203.0.136:3000/expense";
 const API_URL = "http://13.203.0.136:3000/expense";
 
 
@@ -40,8 +41,12 @@ async function renderHomePage(page) {
   // update value dynamically
   limitPicker.value = limit ? limit : 4;
   try {
-    
-    const response = await axios.get(`${API_URL}/get_dt?page=${page}&limit=${limit}`,{ headers: { Authorization: token } })
+      if (token === null) {
+        // if token not available
+        window.location.href = "../account/login.html"
+      } 
+      const response = await axios.get(`${API_URL}/get_dt?page=${page}&limit=${limit}`,{ headers: { Authorization: token } })
+
     if (response) {
       
       const expenses = response.data.data;
@@ -143,6 +148,11 @@ async function addExpense() {
   const token = localStorage.getItem("token");
   
   // Adding a new expense
+  if (token === null) {
+    // if token not available
+    window.location.href = "../account/login.html"
+  } 
+
   try {
     const response = await axios.post(`${API_URL}/add_dt`, expense, { headers: { Authorization: token } })
     if (response) {
@@ -166,7 +176,13 @@ function clearForm() {
 // Function to delete an expense
 async function deleteExpense(id) {
   const token = localStorage.getItem("token");
+
   try {
+    if (token === null) {
+      // if token not available
+      window.location.href = "../account/login.html"
+    } 
+
     await axios.delete(`${API_URL}/delete_dt/${id}`, { headers: { Authorization: token } })
     renderHomePage();
     
@@ -179,7 +195,11 @@ async function deleteExpense(id) {
 buyPremium.addEventListener("click", async (e) => {
   const token = localStorage.getItem("token");
   try {
-    const response = await axios.get("http://localhost:3000/buy-premium/purchase",{ headers: { Authorization: token } });
+    if (token === null) {
+      // if token not available
+      window.location.href = "../account/login.html"
+    } 
+    const response = await axios.get("http://13.203.0.136:3000/buy-premium/purchase",{ headers: { Authorization: token } });
     var options = {
       key: response.data.key_id, // Enter the Key ID generated from the Dashboard
       order_id: response.data.order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
@@ -187,7 +207,7 @@ buyPremium.addEventListener("click", async (e) => {
       // "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
       handler: async function (res) {
         await axios.post(
-          "http://localhost:3000/buy-premium/update-transaction-status",
+          "http://13.203.0.136:3000/buy-premium/update-transaction-status",
           {
             order_id: options.order_id,
             payment_id: res.razorpay_payment_id,
@@ -206,7 +226,7 @@ buyPremium.addEventListener("click", async (e) => {
      // if payement failed..
     rzp1.on("payment.failed", async function (params) {
        try {
-         await axios.post("http://localhost:3000/buy-premium/transaction-failed",
+         await axios.post("http://13.203.0.136:3000/buy-premium/transaction-failed",
              { order_id: options.order_id },{ headers: { Authorization: token } })
        } catch (error) {
          throw new Error(error);
@@ -246,7 +266,12 @@ async function handleFormIncome(e){
   showincome.innerHTML = "";
   
   try {
-    const response = await axios.post(`http://localhost:3000/admin/update-income`,userincome,{headers:{'Authorization':token}})
+    if (token === null) {
+      // if token not available
+      window.location.href = "../account/login.html"
+    } 
+
+    const response = await axios.post(`http://13.203.0.136:3000/admin/update-income`,userincome,{headers:{'Authorization':token}})
     showincome.innerHTML= `Total Income : ${response.data.data}`;
 
     //reset the field:
@@ -272,7 +297,12 @@ async function handleFormIncome(e){
 leaderboard.addEventListener("click", async (e) => {
   const token = localStorage.getItem("token");
   try {
-    await axios.get("http://localhost:3000/premium-feature/leaderboard", {
+    if (token === null) {
+      // if token not available
+      window.location.href = "../account/login.html"
+    } 
+
+    await axios.get("http://13.203.0.136:3000/premium-feature/leaderboard", {
         headers: { Authorization: token },
       })
       window.location.href = "../home/leaderboard.html";
@@ -285,7 +315,12 @@ leaderboard.addEventListener("click", async (e) => {
 showexpense.addEventListener("click", async (e)=>{
   const token = localStorage.getItem("token");
   try {
-    await axios.get("http://localhost:3000/show-expense/user", {
+    if (token === null) {
+      // if token not available
+      window.location.href = "../account/login.html"
+    } 
+
+    await axios.get("http://13.203.0.136:3000/show-expense/user", {
       headers: { Authorization: token },
     })
     window.location.href = "../home/showexpense.html";

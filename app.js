@@ -28,7 +28,7 @@ app.use(compression())
 
 
 // home url
-app.use((req,res)=>{
+app.get('',(req,res)=>{
   res.redirect('/client/account/login.html')
 })
 
