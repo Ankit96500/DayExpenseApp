@@ -34,7 +34,7 @@ export const resetForgetPassword = async (req,res)=>{
         const token = JWT.sign({id:user.id},process.env.JWT_SECRET_KEY)
         // {expiresIn:process.env.RESET_TOKEN_EXPIRATION}
         //create reset link
-        const resetLink = `http://localhost:3000/password/resetpassword/${token}`
+        const resetLink = `http://13.203.0.136:3000/password/resetpassword/${token}`
 
         //send the mail
         const mailOption = {
