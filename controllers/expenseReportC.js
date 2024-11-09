@@ -183,7 +183,7 @@ export const showUserExpense = async (req,res) => {
     for (const link of links) {
         r.push(link.rlink)
     }
-
+    
  
     res.status(201).json({
         daily:formattedData_daily,
@@ -191,6 +191,7 @@ export const showUserExpense = async (req,res) => {
         monthly:formattedData_monthly,
         links:r,
     })
+    
 
     } catch (error) {
         if (error.name ==='SequelizeDatabaseError') {

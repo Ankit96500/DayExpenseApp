@@ -13,7 +13,7 @@ export const purchasePremium = async (req, res) => {
     });
 
     instance.orders.create(
-      { amount: 2500, currency: "INR", receipt: "Please Visit Again!" },
+      { amount: 150, currency: "INR", receipt: "Please Visit Again!" },
       (err, order) => {
         if (err) {
           throw new Error(err);

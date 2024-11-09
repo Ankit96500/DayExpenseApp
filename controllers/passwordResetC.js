@@ -42,7 +42,9 @@ export const resetForgetPassword = async (req,res)=>{
             to:user.email,
             subject:'Password Reset Request',
             text:`You requested a password reset. Please click the following link to reset your password: ${resetLink}`,
-            html: `<p>You requested a password reset. Please click the following link to reset your password:</p><a href="${resetLink}">${resetLink}</a>`,
+            
+            html: `<p>You requested a password reset. Please click the following link to reset your password:</p>
+            <a href="${resetLink}">${resetLink}</a>`,
         }
 
         // here we saved user-password creation in database

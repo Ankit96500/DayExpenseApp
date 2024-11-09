@@ -20,6 +20,7 @@
         const monthlyData = loadData.monthly
         const links = loadData.links
         
+        
         // Set user summary information
         document.getElementById('userName').textContent = dailyData.name;
         document.getElementById('totalIncome').textContent = dailyData.totalIncome.toFixed(2);
@@ -62,11 +63,7 @@
                 tableBody1.insertAdjacentHTML('beforeend', row);
             });
 
-        } else {
-            // tableBody1.innerHTML = 'No User Data Found !'
-            console.log('array naho hai');    
         }
-
     //---------------WEEKLY DATA -----------------------------------------
         const weeklyExpenses = weeklyData.expenses
         if (Array.isArray(weeklyExpenses)) {
@@ -90,9 +87,6 @@
                 tableBody2.insertAdjacentHTML('beforeend', row);
             });
 
-        } else {
-            // tableBody1.innerHTML = 'No User Data Found !'
-            console.log('array naho hai');    
         }
     //---------------MONTHLY DATA -----------------------------------------
         const monthlyExpenses = monthlyData.expenses
@@ -117,10 +111,7 @@
                 tableBody3.insertAdjacentHTML('beforeend', row);
             });
 
-        } else {
-            // tableBody1.innerHTML = 'No User Data Found !'
-            console.log('array naho hai');    
-        }
+        } 
     
     // get lement tag for links
         const llist = document.getElementById("link-list")
@@ -154,7 +145,7 @@
             let err = document.getElementById('custom-alert');
             err.innerHTML = error;  // Insert error message
             err.style.display = 'block';  // Show the alert
-            console.log("-----", error.response);  // Log error response
+            console.log("-----", error);  // Log error response
         
             // Optionally hide the alert after a few seconds
             setTimeout(function () {

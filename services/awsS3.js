@@ -3,8 +3,6 @@ dotenv.config()
 import { S3Client,PutObjectCommand } from "@aws-sdk/client-s3";
 
 
-
-
 export async function uploadFile(data,fileName){
     
     // Configure AWS S3

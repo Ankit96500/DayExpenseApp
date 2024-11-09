@@ -101,8 +101,10 @@ export const downloadReport = async (req,res)=>{
     try {
         const expense = await req.user.getExpensetb();
         const stringifiedData = JSON.stringify(expense)
-        const fileName = generateFileName()
+        console.log('stringfiee dat',stringifiedData);
         
+        const fileName = generateFileName()
+       
         await uploadFile(stringifiedData,fileName)
         
         const fileURL = getS3ObjectUrl(process.env.AWS_BUCKET,process.env.AWS_REGION,fileName);

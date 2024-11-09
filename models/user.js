@@ -26,7 +26,7 @@ User.init(
       defaultValue : 0
     },
     total_income:{
-      type:DataTypes.INTEGER,allowNull:true
+      type:DataTypes.INTEGER,allowNull:true,defaultValue : 0
     }
   },
   {
