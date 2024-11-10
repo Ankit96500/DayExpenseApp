@@ -35,6 +35,10 @@ export const getdata = async (req,res)=>{
             user:req.user
         })
     } catch (error) {
+        if (error.name === 'SequelizeConnectionAcquireTimeoutError') {
+            res.status(401).json({error:"Database connection timeout. Retrying..."})
+            // Implement retry logic or show an error message to the user
+          }
         res.status(401).json({error:"Sorry Try Again.."})
     }
 }
