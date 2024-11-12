@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/leaderboard.css">
+</head>
+<body>
+   
+    
+<div class="navbar-container">
+    <div class="navbar">
+        <!-- Logo -->
+        <a href="#" class="logo">Expense Tracker</a>
+
+        <!-- Navbar Links -->
+        <ul>
+            <li><a href="../home/home.html">Home</a></li>
+            <li><a href="../home/leaderboard.html" id="leaderboard">LeaderBoard</a></li>
+            <li><a href="../home/showexpense.html" id="showexpense">Show Expense</a></li>
+
+        </ul>
+        
+       
+        <!-- LOG OUT Button -->
+        <button class="btn"><a href="../account/login.html">Logout</a></button>
+    </div>
+</div>
+
+
+
+<!-- leaderborad -->
+
+
+    <h1 style="text-align: center;">Expense Leaderboard</h1>
+    <table id="leaderboard-table">
+      <thead>
+        <tr>
+          <th>S.no</th>
+          <th>Name</th>
+          <th>Total Expense</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Dynamic rows will be added here -->
+      </tbody>
+    </table>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+     
+  <!-- Axios CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="../js/leaderboard.js"></script>
+
+</body>
+</html>

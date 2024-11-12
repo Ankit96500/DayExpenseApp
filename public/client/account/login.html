@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Day-To-Day Expense</title>
+   <link rel="stylesheet" href="../css/custom.css">
+    
+  </head>
+  <body>
+ 
+    <h1>Day-To-Day Expense Tracker App</h1>
+    <h2>Login Page</h2>
+     <!-- error display -->
+      <div id="custom-alert" style="display: none; background-color: red; color: white; padding: 10px; border-radius: 5px; margin: 15px 0;"></div>
+
+    <form id="login-form">
+      
+  
+      <input type="email" id="email" placeholder="Email" required />
+      
+      <input type="password" id="password" placeholder="password" required />
+      <button type="submit" id="postlogin">Login User</button>
+
+    <!-- Forgot Password Link Styled as a Button -->
+    
+      <a href="../account/passwordreset.html" id="forgot-password">Forgot Password?</a>
+    </form>
+
+    <div>
+      <p id="log-page"><a href="../account/signup.html">Signup New User</a></p>
+    </div>
+    <!-- axios link -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="../js/login.js"></script>
+  </body>
+</html>

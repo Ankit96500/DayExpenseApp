@@ -1,0 +1,449 @@
+/* display error */
+#error{
+    color: red;
+}
+/* body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+} */
+
+/* Form Container */
+
+.flex-container {
+    display: flex;
+    flex-direction: column;       /* Stacks items vertically */
+    justify-content: center;  /* Centers horizontally */
+    align-items: center;      /* Centers vertically */
+    height: 100vh;            /* Full viewport height */
+    padding: 20px;                /* Adds some padding */
+    position: relative;           /* Retains position when adding new expenses */
+}
+
+
+.container {
+    max-width: 900px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin-bottom: 20px; /* Adds spacing between container and expense list */
+}
+.expense-list-container {
+    max-width: 900px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-height: 380px;            /* Set a max height for the expense list */
+    /* overflow-y: auto;             Enable scrolling if content exceeds max height */
+
+}
+
+/* Flexbox for individual list items (li) */
+.expense-item {
+    display: flex;                 /* Flexbox for the list item */
+    justify-content: space-between; /* Pushes text left and button right */
+    align-items: center;            /* Vertically centers content */
+    width: 100%;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+/* pagination */
+.pagination {
+    margin-top: 20px;
+}
+
+.pagination button {
+    padding: 10px 15px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.pagination button[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+
+
+/* Style for the delete button container */
+.delete-button {
+    margin-left: auto; /* Ensures button aligns to the right */
+}
+
+/* Additional button styling */
+.delete-button button {
+    background-color: #ff4d4d; /* Red background for delete */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.delete-button button:hover {
+    background-color: #ff1a1a; /* Darker red on hover */
+}
+
+
+
+/* Input fields */
+.container input,
+.container select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+/* Button styles */
+#add-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #28a78c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+#add-btn:hover {
+    background-color: #055745;
+}
+
+/* Expense List */
+#expense-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+#expense-list li {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f1f1f1;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+/* Headings */
+h2 {
+    text-align: center;
+    color: #333;
+}
+
+
+
+/* Navbar Container */
+.navbar-container {
+    width: 100%;
+    background-color: #28a78c; /* Navbar background color */
+}
+
+/* Navbar */
+.navbar {
+    max-width: 1200px; /* Max width for content alignment */
+    margin: 0 auto; /* Center navbar container */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px; /* Padding for content spacing */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: transparent; /* No extra background on mobile */
+}
+
+/* Logo */
+.navbar .logo {
+    font-size: 28px;
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease; /* Smooth transition on hover */
+}
+
+.navbar .logo:hover {
+    color: #f1f1f1;
+}
+
+/* Navbar Links */
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.navbar ul li {
+    margin: 0 20px;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 10px;
+    transition: all 0.3s ease; /* Smooth hover transition */
+    position: relative;
+}
+
+.navbar ul li a::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 2px;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    transition: width 0.3s ease; /* Line under hover */
+}
+
+.navbar ul li a:hover::after {
+    width: 100%;
+}
+
+.navbar ul li a:hover {
+    color: #f1f1f1;
+}
+
+/* Buttons */
+.navbar .btn,
+.navbar .rzp-button1 {
+    background-color: #055745;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .rzp-button1 {
+    background-color: #f71a1a;
+    margin-right: 2px;
+}
+
+.navbar .btn a {
+    text-decoration:none;
+    color:inherit;
+}
+
+.navbar .btn:hover,
+.navbar .rzp-button1:hover {
+    background-color: #046a58; /* Darker hover effect */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Add subtle hover shadow */
+}
+
+.navbar .rzp-button1:hover {
+    background-color: #d51717; /* Darker red for premium button */
+}
+
+/* Responsive Navbar Design */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+        background-color: #28a78c;
+    }
+
+    .navbar ul {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .navbar ul li {
+        margin: 10px 0;
+    }
+
+    .navbar .btn,
+    .navbar .rzp-button1 {
+        width: 100%;
+        text-align: center;
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar {
+        padding: 15px;
+    }
+
+    .navbar .logo {
+        font-size: 24px;
+    }
+
+    .navbar ul li a {
+        font-size: 16px;
+    }
+
+    .navbar .btn,
+    .navbar .rzp-button1 {
+        font-size: 14px;
+        padding: 10px 20px;
+    }
+}
+
+/* Username Section */
+.navbar .user-info {
+    margin-right: 15px;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+.navbar .user-info .username {
+    margin-left: 5px;
+}
+
+.navbar .user-info strong {
+    font-weight: bold;
+    color: #f1f1f1;
+}
+
+
+/* Reset margin and padding for better layout */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Main container for income input and display */
+
+.income-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    /* align-items: center; Center vertically */
+    height: 12vh;  /*Full height of the viewport */
+}
+
+.input-group {
+    display: block; /* Allow block elements inside */
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    width: 90%; /* Width of the input group */
+    max-width: 500px; /* Limit the maximum width */
+}
+
+/* Style for the form and inputs */
+.input-group form {
+    display: flex;
+    align-items: center;         /* Vertically align form items */
+}
+
+/* Style for the input label */
+.input-group label {
+    margin-right: 10px;          /* Space between label and input */
+    font-weight: bold;
+}
+
+/* Style for the input fields */
+.input-group input[type="number"] {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    margin-right: 10px;          /* Space between input and button */
+}
+
+.input-group input[type="submit"] {
+    padding: 8px 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.input-group input[type="submit"]:hover {
+    background-color: #45a049;   /* Darker green on hover */
+}
+
+/* Style for the displayed income */
+#showincome {
+    font-weight: bold;
+    margin-left: 20px;
+    white-space: nowrap;         /* Prevent the income text from wrapping */
+}
+
+/* Optional: Adjust form width so it doesn't get too large */
+.input-group form {
+    flex: 1;
+    max-width: 70%;              /* Limit form width, allowing space for income display */
+}
+
+/* Ensure the income display stays on the right */
+#showincome {
+    text-align: right;
+    min-width: 2px;            /* Ensure enough space for the income display */
+}
+
+/* ribbon */
+#ribbon {
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #e74c3c; /* Ribbon background color */
+    color: white; /* Text color */
+    font-weight: bold;
+    font-size: 16px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  #ribbon:before, #ribbon:after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    border-style: solid;
+    border-width: 10px;
+    border-color: #e74c3c transparent transparent transparent;
+  }
+  
+  #ribbon:before {
+    left: 0;
+    transform: translateX(-50%);
+  }
+  
+  #ribbon:after {
+    right: 0;
+    transform: translateX(50%);
+  }
+  
+  /* Optional - Add some extra styling for the container */
+  .out-ribbon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1cm;
+    /* height: 100vh; */
+  }
+  
