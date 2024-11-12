@@ -1,6 +1,6 @@
 // Replace the following URL with your unique CRUD CRUD API endpoint
-// const API_URL = "http://localhost:3000/expense";
-const API_URL = "http://localhost:3000/expense";
+// const API_URL = "http://13.203.0.136:3000/expense";
+const API_URL = "http://13.203.0.136:3000/expense";
 
 
 // pagination setup to display expense define globally
@@ -198,7 +198,7 @@ buyPremium.addEventListener("click", async (e) => {
       // if token not available
       window.location.href = "../account/login.html"
     } 
-    const response = await axios.get("http://localhost:3000/buy-premium/purchase",{ headers: { Authorization: token } });
+    const response = await axios.get("http://13.203.0.136:3000/buy-premium/purchase",{ headers: { Authorization: token } });
     var options = {
       key: response.data.key_id, // Enter the Key ID generated from the Dashboard
       order_id: response.data.order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
@@ -206,7 +206,7 @@ buyPremium.addEventListener("click", async (e) => {
       // "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
       handler: async function (res) {
         await axios.post(
-          "http://localhost:3000/buy-premium/update-transaction-status",
+          "http://13.203.0.136:3000/buy-premium/update-transaction-status",
           {
             order_id: options.order_id,
             payment_id: res.razorpay_payment_id,
@@ -225,7 +225,7 @@ buyPremium.addEventListener("click", async (e) => {
      // if payement failed..
     rzp1.on("payment.failed", async function (params) {
        try {
-         await axios.post("http://localhost:3000/buy-premium/transaction-failed",
+         await axios.post("http://13.203.0.136:3000/buy-premium/transaction-failed",
              { order_id: options.order_id },{ headers: { Authorization: token } })
        } catch (error) {
          throw new Error(error);
@@ -270,7 +270,7 @@ async function handleFormIncome(e){
       window.location.href = "../account/login.html"
     } 
 
-    const response = await axios.post(`http://localhost:3000/admin/update-income`,userincome,{headers:{'Authorization':token}})
+    const response = await axios.post(`http://13.203.0.136:3000/admin/update-income`,userincome,{headers:{'Authorization':token}})
     showincome.innerHTML= `Total Income : ${response.data.data}`;
 
     //reset the field:
@@ -301,7 +301,7 @@ leaderboard.addEventListener("click", async (e) => {
       window.location.href = "../account/login.html"
     } 
 
-    await axios.get("http://localhost:3000/premium-feature/leaderboard", {
+    await axios.get("http://13.203.0.136:3000/premium-feature/leaderboard", {
         headers: { Authorization: token },
       })
       window.location.href = "../home/leaderboard.html";
@@ -319,7 +319,7 @@ showexpense.addEventListener("click", async (e)=>{
       window.location.href = "../account/login.html"
     } 
 
-    await axios.get("http://localhost:3000/show-expense/user", {
+    await axios.get("http://13.203.0.136:3000/show-expense/user", {
       headers: { Authorization: token },
     })
     window.location.href = "../home/showexpense.html";
