@@ -10,7 +10,7 @@
             window.location.href = "../account/login.html"
           } 
     
-        const response = await axios.get("http://13.203.0.136:3000/show-expense/user",{headers:{'Authorization':token}})
+        const response = await axios.get("http://localhost:3000/show-expense/user",{headers:{'Authorization':token}})
         
         const loadData = response.data
         console.log('inside the log data',loadData);
@@ -168,7 +168,7 @@
             window.location.href = "../account/login.html"
           } 
     
-        const response = await axios.get("http://13.203.0.136:3000/expense/download-report",{headers:{'Authorization':token}})
+        const response = await axios.get("http://localhost:3000/expense/download-report",{headers:{'Authorization':token}})
         
         console.log('Response received from server', response.data.data);
         const jsonData = response.data.data
@@ -188,11 +188,9 @@
 
         link.click();
       
-
         
     } catch (error) {
-        console.log("-----",error.response.request.statusText);
-        console.log('errro from server side',error);
+       alert(error.response.data.error)
     }
   }
 

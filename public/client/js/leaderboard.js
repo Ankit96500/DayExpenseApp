@@ -10,7 +10,7 @@ async function getLeaderBoardData(params) {
         window.location.href = "../account/login.html"
       } 
 
-      const response = await axios.get("http://13.203.0.136:3000/premium-feature/get-leaderboard-data",
+      const response = await axios.get("http://localhost:3000/premium-feature/get-leaderboard-data",
       { headers: { Authorization: token } })
           if (response){
             const leaderboard = response.data.data
@@ -59,7 +59,7 @@ async function getLeaderBoardData(params) {
 showexpense.addEventListener("click", async (e)=>{
   const token = localStorage.getItem("token");
   try {
-    await axios.get("http://13.203.0.136:3000/show-expense/user", {
+    await axios.get("http://localhost:3000/show-expense/user", {
       headers: { Authorization: token },
     })
     window.location.href = "../home/showexpense.html";

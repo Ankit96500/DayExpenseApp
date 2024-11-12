@@ -3,9 +3,12 @@ document.getElementById('reset-password-form').addEventListener('submit', async 
 
     const newPassword = document.getElementById('newPassword').value;
     const token = window.location.pathname.split('/').pop(); // Extract the token from the URL
+<<<<<<< HEAD
     console.log('show me password from client',newPassword);
     console.log('show me token from client',token);
     
+=======
+>>>>>>> typescript
     let data = {}
     data.newPassword = newPassword
     
@@ -13,7 +16,11 @@ document.getElementById('reset-password-form').addEventListener('submit', async 
     document.getElementById('reset-password-form').reset()
 
     try {
+<<<<<<< HEAD
         const response = await axios.post(`http://13.203.0.136:3000/password/reset-password-done/${token}`,data);
+=======
+        await axios.post(`http://localhost:3000/password/reset-password-done/${token}`,data);
+>>>>>>> typescript
 
         // console.log('resonse comimng tfromt he server',response);
         alert("Your Password Has Been Changed !")
