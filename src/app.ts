@@ -37,7 +37,7 @@ app.use(compression())
 
 // home url redirection
 app.get('/',(req:Request,res:Response)=>{
-  res.redirect('client/account/login.html')
+  res.redirect('/client/account/login.html')
 })
 
 
