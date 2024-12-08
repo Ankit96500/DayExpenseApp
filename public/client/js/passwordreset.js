@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         console.log("show me user demail",UserData);
         
         try {
-            const response = await axios.post('http://13.203.0.136:3000/password/forgotpassword',UserData)
+            const response = await axios.post('http://localhost:3000/password/forgotpassword',UserData)
             alert(`Please Check Your Gmail ${response.data.data}`)
             // console.log('upcoming server resposne',response.data);
             

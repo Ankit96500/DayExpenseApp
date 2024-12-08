@@ -1,6 +1,7 @@
 import User from "../models/user.js"
-import Expense from "../models/expenseM.js"
-import sequelize from "sequelize";
+// import expenseReport from "../models/expensereportM.js";
+import Expense from "../models/expenseM.js";
+import mongoose from "mongoose";
 import moment from "moment";// You can use moment or any date library for date operations
 
 
@@ -8,79 +9,111 @@ export const showUserExpense = async (req,res) => {
     const today = moment().startOf('day');
     const weekstart = moment().startOf('week');
     const monthstart = moment().startOf('month')
+    console.log('--->',req.user._id);
     
     try {
     // query for time period today
    
-    const daily = await User.findAll({
-        where:{id:req.user.id},
-        attributes:['name','total_income','total_expense'],
-        include:[
-            {
-                model:Expense,
-                as:"expensetb",
-                attributes:[
-                    'id','expense_amount','desc','category',[
-                        sequelize.fn('DATE',sequelize.col('expensetb.createdAt')),'date'
-                    ]
-                ],
-                // where:{
-                //     createdAt:{
-                //         [sequelize.Op.between]:[today,moment().endOf('day')],        
-                //     }
-                // },
-            },
-            
-        ],
-    });
-
-     // query for time period weekly
-    const weekly = await User.findAll({
-        where:{id:req.user.id},
-        attributes:['name','total_income','total_expense'],
-        include:[
-            {
-                model:Expense,
-                as:"expensetb",
-                attributes:[
-                    'id','expense_amount','desc','category',[
-                        sequelize.fn('DATE',sequelize.col('expensetb.createdAt')),'date'
-                    ]
-                ],
-                where:{
-                    createdAt:{
-                        [sequelize.Op.between]:[weekstart,moment().endOf('week')],
-                    }
+   // Query for daily expenses
+   const daily = await User.aggregate([
+    { $match: { _id: new mongoose.Types.ObjectId(req.user._id) } }, // Match the user
+    {
+        $lookup: {
+            from: "expenses", // Name of the Expense collection in MongoDB
+            localField: "_id",
+            foreignField: "UserID",
+            as: "expenses",
+        },
+    },
+    {
+        $project: {
+            name: 1,
+            total_income: 1,
+            total_expense: 1,
+            expenses: {
+                $filter: {
+                    input: "$expenses",
+                    as: "expense",
+                    cond: {
+                        $and: [
+                            { $gte: ["$$expense.createdAt", today] },
+                            { $lt: ["$$expense.createdAt", moment().endOf('day').toDate()] },
+                        ],
+                    },
                 },
             },
-            
-        ],
-    });
-
-    // query for time period monthly
-    const monthly = await User.findAll({
-        where:{id:req.user.id},
-        attributes:['name','total_income','total_expense'],
-        include:[
-            {
-                model:Expense,
-                as:"expensetb",
-                attributes:[
-                    'id','expense_amount','desc','category',[
-                        sequelize.fn('DATE',sequelize.col('expensetb.createdAt')),'date'
-                    ]
-                ],
-                where:{
-                    createdAt:{
-                        [sequelize.Op.between]:[monthstart,moment().endOf('month')],
-                    }
+        },
+    },
+]);
+        // Query for weekly expenses
+    const weekly = await User.aggregate([
+        { $match: { _id: new mongoose.Types.ObjectId(req.user._id) } }, // Match the user
+        {
+            $lookup: {
+                from: "expenses",
+                localField: "_id",
+                foreignField: "UserID",
+                as: "expenses",
+            },
+        },
+        {
+            $project: {
+                name: 1,
+                total_income: 1,
+                total_expense: 1,
+                expenses: {
+                    $filter: {
+                        input: "$expenses",
+                        as: "expense",
+                        cond: {
+                            $and: [
+                                { $gte: ["$$expense.createdAt", weekstart] },
+                                { $lt: ["$$expense.createdAt", moment().endOf('week').toDate()] },
+                            ],
+                        },
+                    },
                 },
             },
-            
-        ],
-    });
-
+        },
+    ]);
+   // Query for monthly expenses
+   const monthly = await User.aggregate([
+    { $match: { _id: new mongoose.Types.ObjectId(req.user._id) } }, // Match the user
+    {
+        $lookup: {
+            from: "expenses",
+            localField: "_id",
+            foreignField: "UserID",
+            as: "expenses",
+        },
+    },
+    {
+        $project: {
+            name: 1,
+            total_income: 1,
+            total_expense: 1,
+            expenses: {
+                $filter: {
+                    input: "$expenses",
+                    as: "expense",
+                    cond: {
+                        $and: [
+                            { $gte: ["$$expense.createdAt", monthstart] },
+                            { $lt: ["$$expense.createdAt", moment().endOf('month').toDate()] },
+                        ],
+                    },
+                },
+            },
+        },
+    },
+]);
 //-------------------------------------------------------------------------
+    console.log('dau=ily: ',daily);
+    console.log('weeekly',weekly);
+    console.log("monthly:;",weekly);
+    
+    
+    
     let formattedData_daily;
     if (daily.length === 0) {
        formattedData_daily = {}
@@ -177,7 +210,10 @@ export const showUserExpense = async (req,res) => {
     }
 
     
-    const links = await req.user.getExpensereporttb();
+    // const links = await req.user.getExpensereporttb();
+    const links = await expenseReport.find({UserID:req.user});
+    console.log("inside the link",links);
+    
     const r = []
     
     for (const link of links) {

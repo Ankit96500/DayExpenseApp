@@ -4,6 +4,7 @@ import Expense from "../models/expenseM.js";
 import User from "../models/user.js";
 import {getS3ObjectUrl,generateFileName} from "../utils/customfun.js"
 import {uploadFile} from "../services/awsS3.js"
+import mongoose from "mongoose";
 
 
 export const getdata = async (req,res)=>{
@@ -16,13 +17,14 @@ export const getdata = async (req,res)=>{
         const offset = (page - 1 ) * limit;
 
         // Fetch total count of records (without pagination, used for frontend display)
-        const totalItems = await req.user.countExpensetb();
+        // const totalItems = await req.user.countExpensetb();
+        const userid = req.user._id
+        const totalItems = await Expense.countDocuments({UserID:userid});
     
-        // Fetch the data with pagination (using offset and limit)
-        const data = await req.user.getExpensetb({
-            limit:limit,offset:offset
-        })
-
+        
+        const data = await Expense.find().limit(limit).skip(offset)
+        // console.log(' inside the data',data);
+        
         // Calculate the total number of pages
         const totalPages = Math.ceil(totalItems / limit);
     
@@ -40,57 +42,81 @@ export const getdata = async (req,res)=>{
 }
 
 export const adddata = async (req,res)=>{
-    // console.log('add data->',req.user.id);
-    const userid = req.user.id
-    const {expense_amount,desc,category} = req.body
-    const t = await sequelize.transaction();
-    try {
-        await Expense.create({
-        expense_amount:expense_amount,
-        desc:desc,
-        category:category,
-        UserID:userid
-        },{transaction:t})
 
-        let user =  req.user
-        user.total_expense += Number(expense_amount)
-        await user.save({transaction:t})
-        await t.commit();
-        res.status(201).json({'msg':"ok Data Created.."})
+    const {expense_amount,desc,category} = req.body
+
+    // Start a session for the transaction
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+         // Step 1: Create a new expense document
+         const expense = await Expense.create(
+            [
+                {
+                    expense_amount: expense_amount,
+                    desc: desc,
+                    category: category,
+                    UserID: req.user._id, // Use the user's ID
+                },
+            ],
+            { session } // Pass the session to include this operation in the transaction
+        );
+         // Step 2: Update the user's total_expense
+        req.user.total_expense += Number(expense_amount);
+        await req.user.save({ session }); // Save user document in the same transaction
+
+        // Commit the transaction
+        await session.commitTransaction();
+        session.endSession();
+
+        // Send success response
+        res.status(201).json({ msg: "Data Created Successfully.", expense });
 
     } catch (error) {
-        await t.rollback();
-        // Log and send error response
-        console.error('Error:', error);
-        res.status(500).json({ error: 'Failed to add expense. Please try again later.' });
+        // Rollback the transaction in case of error
+        await session.abortTransaction();
+        session.endSession();
+
+        console.error("Error:", error);
+        res.status(500).json({ error: "Failed to add expense. Please try again later." });
     }
 }
 
 export const deletedata = async (req,res)=>{
-    const t  = await sequelize.transaction();
     const id = req.params.id
-    console.log('--------------',req.params);
+    console.log(' iside the id',id);
+    
+    // start session for the transcation
+    const session = await mongoose.startSession();
+    session.startTransaction();
     try {
-        const expense = await Expense.findByPk(id)
+        //step 1: find the expense by id
+
+        const expense = await Expense.findById(id).session(session);
+        console.log(' insid ethe expense',expense);
         
         if (!expense) {
-            return res.status(404).json({ msg: "Expense not found." });
+            return res.status(404).json({ msg: "Expense not found."});
         }
-
+        // step 2: adjust the user for the total expense
         let user = req.user
         user.total_expense -= Number(expense.expense_amount) 
-        await user.save({transaction:t})
+        // save the  user document in the same transcation
+        await user.save({session})
 
-        await expense.destroy({transaction:t})
+        // step 3: delete the expense document
+        await expense.deleteOne(session);
 
-        // Commit the transaction if everything is successful
-        await t.commit();
-
+        // step 4: Commit the transaction if everything is successful
+        await session.commitTransaction();
+        session.endSession();
         res.status(201).json({'msg':"ok Data Deleted.."})
     } catch (error) {
         console.log('errroor',error);
-        
-        await t.rollback();
+        // rollback the transcation in case of error
+        await session.abortTransaction();
+        session.endSession();
         res.status(500).json({ error: "Failed to delete expense. Please try again later." });
     }
 
@@ -99,7 +125,7 @@ export const deletedata = async (req,res)=>{
 export const downloadReport = async (req,res)=>{
     
     try {
-        const expense = await req.user.getExpensetb();
+        const expense = await Expense.find({UserID:req.user});
         const stringifiedData = JSON.stringify(expense)
         console.log('stringfiee dat',stringifiedData);
         
@@ -118,12 +144,10 @@ export const downloadReport = async (req,res)=>{
     }
 }
 
-
 export const editdata = (req,res)=>{
    
 
 }
-
 
 export const geteditdata  = (req,res)=>{
   

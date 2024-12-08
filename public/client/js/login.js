@@ -24,7 +24,7 @@ function handleFormLogin(event){
 async function LoginUser(LoginUserData) {
     const e  = document.getElementById('error')
     try {
-        const response = await axios.post('http://13.203.0.136:3000/admin/login-user',LoginUserData)
+        const response = await axios.post('http://localhost:3000/admin/login-user',LoginUserData)
         console.log(response.data.token);
         localStorage.setItem('token',response.data.token);
         // Redirect to another HTML page

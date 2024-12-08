@@ -26,7 +26,7 @@ export const resetForgetPassword = async (req,res)=>{
     const {email} = req.body
     try {
         // check if valid user
-        const user = await User.findOne({where:{ email:email }});
+        const user = await User.findOne({ email:email });
         if (!user) {
             return res.status(404).json({ error: 'Enter Valid Email ID' });
         }
@@ -34,7 +34,7 @@ export const resetForgetPassword = async (req,res)=>{
         const token = JWT.sign({id:user.id},process.env.JWT_SECRET_KEY)
         // {expiresIn:process.env.RESET_TOKEN_EXPIRATION}
         //create reset link
-        const resetLink = `http://13.203.0.136:3000/password/resetpassword/${token}`
+        const resetLink = `http://localhost:3000/password/resetpassword/${token}`
 
         //send the mail
         const mailOption = {
@@ -54,6 +54,8 @@ export const resetForgetPassword = async (req,res)=>{
             const result = await transporter.sendMail(mailOption)
             // console.log("Message sent: %s", result.messageId);
             // res.status(201).json({data:"Please Check Your Registered Gmail"})
+            console.log('result',result);
+            
             res.status(201).json({data:result.envelope.to})
         } catch (err) {
             throw new Error(err);
@@ -78,7 +80,7 @@ export const resetRequestPassword = async (req,res)=>{
         const userId = decoded.id;
 
         // Find the user by their ID
-        const user = await User.findByPk(userId);
+        const user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({ error: 'Invalid token or user not found'});
         }
@@ -114,7 +116,7 @@ export const resetPasswordDone = async (req,res)=>{
         const userId = decoded.id;
 
         // Find the user by their ID
-        const user = await User.findByPk(userId);
+        const user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({ error: 'Invalid token or user not found' });
         }
@@ -127,8 +129,12 @@ export const resetPasswordDone = async (req,res)=>{
         await user.save();
 
         // Optionally: Mark the reset password as inactive in the Password model
-        await Password.update({ isActive: false }, { where: { UserID: userId } });
-
+        await Password.updateMany(
+            {UserID:userId},   // match the document with user id
+            {$set:{isActive:false}}  // update: set is active to false
+        )
+        console.log('password ahs changed');
+        
         res.status(200).json({ message: 'Password reset successfully.' });
     } catch (error) {
         res.status(400).json({ error: 'Token is invalid or has expired.' });

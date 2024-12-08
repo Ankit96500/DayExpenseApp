@@ -6,6 +6,8 @@ import User from "../models/user.js";
 dotenv.config();
 
 export const purchasePremium = async (req, res) => {
+  console.log(' iama calling..');
+  
   try {
     var instance = new Razorpay({
       key_id: process.env.KEY_ID,
@@ -16,22 +18,19 @@ export const purchasePremium = async (req, res) => {
       { amount: 150, currency: "INR", receipt: "Please Visit Again!" },
       (err, order) => {
         if (err) {
-          throw new Error(err);
+          console.log(err);
         }
         if (order) {
           // save this order in the database
-          Orders.create({
+          const od = new Orders({
             orderId: order.id,
             status: "Pending",
-            UserID: req.user.id,
+            UserID: req.user,
           })
-            .then(() => {
-              // console.log("you data saved successfully",result);
-              res.status(201).json({ order: order, key_id: instance.key_id });
-            })
-            .catch((err) => {
-              throw new Error(err);
-            });
+          od.save();
+          if (od) {
+            res.status(201).json({ order: order, key_id: instance.key_id });
+          }
         }
       }
     );
@@ -46,25 +45,24 @@ export const updateTransactionStatus = async (req, res) => {
     const { order_id, payment_id } = req.body;
 
     // Get order object
-    const orderObj = await Orders.findOne({ where: { orderId: order_id } });
+    const orderObj = await Orders.findOne({
+      orderId:order_id
+    });
     if (!orderObj) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Order not found" });
+      return res.status(404).json({ success: false, message: "Order not found" });
     }
     // Update order with paymentId and status
-    await orderObj.update({
-      paymentId: payment_id,
-      status: "SUCCESSFUL",
-    });
+    orderObj.paymentId=payment_id
+    orderObj.status = "SUCCESSFUL"
+    await orderObj.save();
 
     // Update user to become premium user
-    const user = await User.findByPk(req.user.id);
+    const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({ success: false, message: "User not found" });
     }
-
-    await user.update({ isPremiumUser: true });
+    user.isPremiumUser = true
+    await user.save();
 
     // Return success response
     return res.status(201).json({
@@ -84,16 +82,15 @@ export const transactionFailed = async (req, res) => {
     const { order_id } = req.body;
 
     // Get order object
-    const orderObj = await Orders.findOne({ where: { orderId: order_id } });
+    const orderObj = await Orders.findOne({ orderId: order_id });
     if (!orderObj) {
       return res
         .status(404)
         .json({ success: false, message: "Order not found" });
     }
     // Update order with paymentId and status
-    await orderObj.update({
-      status: "FAILED",
-    });
+    orderObj.status = "FAILED"
+    await orderObj.save();
 
     // Return success response
     return res.status(201).json({

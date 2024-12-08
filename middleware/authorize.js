@@ -12,7 +12,7 @@ export async function UserAuthorized(req,res,next) {
         // verify the token
         const user_ID = JWT.verify(token,process.env.JWT_SECRET_KEY)
      
-        const user = await User.findByPk(user_ID.userID)
+        const user = await User.findById(user_ID.userID)
         req.user = user
     
         next();       

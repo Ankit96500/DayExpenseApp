@@ -1,0 +1,27 @@
+# for test key
+KEY_ID = 
+KEY_SECRET = 
+
+#  JSONWEBTOKEN SECRETKEY
+JWT_SECRET_KEY = " define your"
+
+#  SMTP
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=
+SMTP_PASS=
+# RESET_TOKEN_EXPIRATION=3600 # Token expiration time in seconds
+RESET_TOKEN_EXPIRATION="2h" # Token expiration time in hours
+#RESET_TOKEN_EXPIRATION="5m" # Token expiration time in minutes
+
+# AMAZON S3 Congiguration:
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_REGION=
+AWS_BUCKET=
+
+
+# DATABASE INFO:
+DB_NAME=
+DB_USER = 
+DB_PASS = 

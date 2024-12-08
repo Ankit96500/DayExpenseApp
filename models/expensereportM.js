@@ -1,31 +1,45 @@
-import { DataTypes, Model } from "sequelize";
-import sequelize from "../config/database.js";
+// import mongoose from "mongoose";
 
-class expenseReport extends Model {}
-expenseReport.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-      allowNull: false,
-    },
+// const expenseReportSchema = new mongoose.Schema({
+//     rlink:{
+//         type:String
+//     },
+//     UserID:{
+//         type:mongoose.Schema.ObjectId,
+//         ref:"User",
+//         required:true
+//     }
 
-    rlink: { type: DataTypes.STRING},
+// })
+// const expenseReport = mongoose.model("expensereport",expenseReportSchema);
+// export default expenseReport;
+// import { DataTypes, Model } from "sequelize";
+// import sequelize from "../config/database.js";
 
-    UserID: {
-      allowNull:false,
-      type: DataTypes.INTEGER,
-      references: {
-        model: "User",
-        key: "id",
-      },
-    },
-  },
-  {
-    freezeTableName: true,
-    sequelize,
-  }
-);
+// class expenseReport extends Model {}
+// expenseReport.init(
+//   {
+//     id: {
+//       type: DataTypes.INTEGER,
+//       autoIncrement: true,
+//       primaryKey: true,
+//       allowNull: false,
+//     },
 
-export default expenseReport;
+//     rlink: { type: DataTypes.STRING},
+
+//     UserID: {
+//       allowNull:false,
+//       type: DataTypes.INTEGER,
+//       references: {
+//         model: "User",
+//         key: "id",
+//       },
+//     },
+//   },
+//   {
+//     freezeTableName: true,
+//     sequelize,
+//   }
+// );
+

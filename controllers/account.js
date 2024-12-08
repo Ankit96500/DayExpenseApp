@@ -14,12 +14,13 @@ export async function postSignupUser(req, res, next) {
   try {
     const hashpassword = await bcrypt.hash(password, saltRounds);
 
-    const data = await User.create({
+    const data = new User({
       name: name,
       password: hashpassword,
       email: email,
     });
-
+    await data.save();
+    
     res.status(201).json({ data: data });
   } catch (error) {  
     if (error instanceof Sequelize.UniqueConstraintError) {
@@ -37,17 +38,16 @@ export async function postLoginUser(req, res) {
   try {
     // first check , given email exist or not
     const user = await User.findOne({
-      where: {
-        email: email,
-      },
+      email:email,
     });
+    
     // If the user does not exist
     if (!user) {
       return res.status(404).json({ error: "User does not exist" });
     }
 
     // If the user exists, compare the provided password with the stored hashed password
-    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    const isPasswordMatch = bcrypt.compare(password, user.password);
 
     // If the password does not match
     if (!isPasswordMatch) {
@@ -72,7 +72,7 @@ export async function updateUserIncome(req,res) {
   try {
     let user = req.user
     user.total_income = income
-    user.save();
+    await user.save();
     
     res.status(201).json({data:user.total_income})
   } catch (error) {
